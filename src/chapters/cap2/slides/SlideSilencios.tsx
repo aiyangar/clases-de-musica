@@ -1,5 +1,5 @@
-import RestSymbol from '../visualizations/RestSymbol';
-import type { FigureKind } from '../visualizations/NoteSymbol';
+import RestSymbol from '@/components/music/RestSymbol';
+import type { FigureKind } from '@/components/music/NoteSymbol';
 
 type Row = {
   kind: FigureKind;

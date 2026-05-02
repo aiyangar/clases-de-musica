@@ -1,5 +1,5 @@
-import NoteSymbol from '../visualizations/NoteSymbol';
-import type { FigureKind } from '../visualizations/NoteSymbol';
+import NoteSymbol from '@/components/music/NoteSymbol';
+import type { FigureKind } from '@/components/music/NoteSymbol';
 
 type Row = {
   kind: FigureKind;

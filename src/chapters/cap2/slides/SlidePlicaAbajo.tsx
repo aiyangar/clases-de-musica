@@ -1,4 +1,4 @@
-import NoteSymbol from '../visualizations/NoteSymbol';
+import NoteSymbol from '@/components/music/NoteSymbol';
 
 export default function SlidePlicaAbajo() {
   return (

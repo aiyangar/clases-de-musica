@@ -1,6 +1,5 @@
-import PlicaQuiz, {
-  ALL_PLICA_QUESTIONS,
-} from '../visualizations/PlicaQuiz';
+import PlicaQuiz from '../visualizations/PlicaQuiz';
+import { ALL_PLICA_QUESTIONS } from '../visualizations/PlicaQuizData';
 
 type Props = {
   part: 1 | 2;
