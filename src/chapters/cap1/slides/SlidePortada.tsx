@@ -13,9 +13,6 @@ export default function SlidePortada() {
       >
         Códigos del Sonido
       </span>
-      <p className="subtitle max-w-[1200px]">
-        Ciencia, magia y música <em>en una sola frecuencia</em>
-      </p>
     </div>
   );
 }

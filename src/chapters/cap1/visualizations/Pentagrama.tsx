@@ -12,7 +12,13 @@ export default function Pentagrama() {
   return (
     <svg
       viewBox="0 0 800 180"
-      className="w-full max-w-[1200px] mx-auto"
+      className="block mx-auto"
+      style={{
+        width: '100%',
+        maxWidth: '1200px',
+        maxHeight: 'clamp(140px, 30vh, 280px)',
+      }}
+      preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label="Pentagrama con notas musicales"
     >

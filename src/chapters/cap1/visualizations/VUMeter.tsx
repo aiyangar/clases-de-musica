@@ -2,8 +2,9 @@ export default function VUMeter() {
   return (
     <div className="w-full max-w-[900px] mx-auto" aria-hidden="true">
       <div
-        className="relative h-12 rounded-full overflow-hidden border border-cyan/40"
+        className="relative rounded-full overflow-hidden border border-cyan/40"
         style={{
+          height: 'clamp(36px, 6.5vh, 64px)',
           background:
             'linear-gradient(90deg, #22ff66 0%, #ffff00 55%, #ff2233 100%)',
           boxShadow: '0 0 24px rgba(0, 255, 255, 0.35), inset 0 0 14px rgba(0,0,0,0.6)',
