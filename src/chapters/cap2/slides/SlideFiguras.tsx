@@ -30,7 +30,7 @@ export default function SlideFiguras({ part }: Props) {
   const subtitle =
     part === 1
       ? 'De más larga a más corta. Cada figura dura la mitad que la anterior.'
-      : 'Se siguen dividiendo. La garrapatea dura ³² veces menos que una redonda.';
+      : 'Se siguen dividiendo. La garrapatea dura 32 veces menos que una redonda.';
 
   return (
     <div className="flex-1 flex flex-col gap-8 justify-center">
