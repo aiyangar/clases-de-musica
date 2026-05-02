@@ -1,17 +1,19 @@
-const HEIGHTS = [60, 90, 130, 170, 200, 180, 145, 175, 200, 160, 110, 70];
+const RATIOS = [0.3, 0.45, 0.65, 0.85, 1, 0.9, 0.72, 0.87, 1, 0.8, 0.55, 0.35];
 
 export default function FrequencyBars() {
   return (
     <div
-      className="flex items-end justify-center gap-3 h-[240px] w-full"
+      className="flex items-end justify-center gap-3 w-full"
+      style={{ height: 'clamp(140px, 24vh, 260px)' }}
       aria-hidden="true"
     >
-      {HEIGHTS.map((h, i) => (
+      {RATIOS.map((r, i) => (
         <div
           key={i}
-          className="relative w-[26px] rounded-t-md overflow-hidden"
+          className="relative rounded-t-md overflow-hidden"
           style={{
-            height: `${h}px`,
+            width: 'clamp(14px, 1.6vw, 28px)',
+            height: `${r * 100}%`,
             background: 'linear-gradient(to top, #ff00ff, #00ffff)',
             boxShadow: '0 0 18px rgba(255, 0, 255, 0.55)',
             filter: `hue-rotate(${i * 12}deg)`,

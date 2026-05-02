@@ -41,7 +41,9 @@ export default function HarmonyWaves() {
     <div className="w-full max-w-[1200px] mx-auto flex items-center gap-8">
       <svg
         viewBox="0 0 800 480"
-        className="flex-1"
+        className="flex-1 block"
+        style={{ maxHeight: 'clamp(180px, 36vh, 360px)' }}
+        preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label="Tres ondas sinusoidales superpuestas: bajo, acordes y melodía"
       >
