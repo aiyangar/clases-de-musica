@@ -1,52 +1,58 @@
 import { useMemo, useState } from 'react';
 
-type Direction = 'up' | 'down';
+export type Direction = 'up' | 'down';
 
-type Question = {
+export type Question = {
   id: string;
   staffPosition: number;
   correct: Direction;
-  hint: string;
 };
 
-const QUESTIONS: Question[] = [
-  { id: 'q1', staffPosition: 1, correct: 'down', hint: 'Por encima de la 3ª línea' },
-  { id: 'q2', staffPosition: 9, correct: 'up', hint: 'Por debajo de la 3ª línea' },
-  { id: 'q3', staffPosition: 3, correct: 'down', hint: 'Sobre la 4ª línea' },
-  { id: 'q4', staffPosition: 7, correct: 'up', hint: 'Sobre la 2ª línea' },
-  { id: 'q5', staffPosition: 0, correct: 'down', hint: 'Encima de la 5ª línea' },
-  { id: 'q6', staffPosition: 10, correct: 'up', hint: 'Bajo la 1ª línea' },
+export const ALL_PLICA_QUESTIONS: Question[] = [
+  { id: 'q1', staffPosition: 1, correct: 'down' },
+  { id: 'q2', staffPosition: 9, correct: 'up' },
+  { id: 'q3', staffPosition: 3, correct: 'down' },
+  { id: 'q4', staffPosition: 7, correct: 'up' },
+  { id: 'q5', staffPosition: 0, correct: 'down' },
+  { id: 'q6', staffPosition: 10, correct: 'up' },
 ];
 
-const STAFF_TOP_Y = 20;
-const STAFF_GAP = 14;
-const STAFF_LEFT = 16;
-const STAFF_RIGHT = 144;
-const NOTE_X = 80;
-const VIEW_W = 160;
-const VIEW_H = 200;
+const STAFF_TOP_Y = 16;
+const STAFF_GAP = 10;
+const STAFF_LEFT = 24;
+const STAFF_RIGHT = 196;
+const NOTE_X = 110;
+const VIEW_W = 220;
+const VIEW_H = 130;
+const STEM_LEN = 38;
+const SVG_HEIGHT_PX = 116;
 
 function staffPositionToY(pos: number) {
   return STAFF_TOP_Y + pos * STAFF_GAP;
 }
 
-export default function PlicaQuiz() {
+type Props = {
+  questions: Question[];
+  startNumber?: number;
+};
+
+export default function PlicaQuiz({ questions, startNumber = 1 }: Props) {
   const [answers, setAnswers] = useState<Record<string, Direction>>({});
 
   const score = useMemo(
     () =>
-      QUESTIONS.reduce(
+      questions.reduce(
         (n, q) => (answers[q.id] === q.correct ? n + 1 : n),
         0,
       ),
-    [answers],
+    [answers, questions],
   );
   const answered = Object.keys(answers).length;
 
   return (
     <div className="flex flex-col gap-6 w-full">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-5 w-full">
-        {QUESTIONS.map((q, i) => {
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+        {questions.map((q, i) => {
           const userAnswer = answers[q.id];
           const isAnswered = userAnswer !== undefined;
           const isCorrect = userAnswer === q.correct;
@@ -54,7 +60,7 @@ export default function PlicaQuiz() {
           return (
             <div
               key={q.id}
-              className="rounded-2xl p-4 border-2 backdrop-blur-md transition-colors"
+              className="rounded-2xl p-5 border-2 backdrop-blur-md transition-colors"
               style={{
                 background: 'rgba(15, 0, 35, 0.55)',
                 borderColor: !isAnswered
@@ -70,8 +76,8 @@ export default function PlicaQuiz() {
               }}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-orbitron text-base tracking-[0.25em] text-cyan/80">
-                  {String(i + 1).padStart(2, '0')}
+                <span className="font-orbitron text-lg tracking-[0.25em] text-cyan/85">
+                  {String(startNumber + i).padStart(2, '0')}
                 </span>
                 {isAnswered && (
                   <span
@@ -89,7 +95,7 @@ export default function PlicaQuiz() {
                 correctStem={isAnswered ? q.correct : null}
               />
 
-              <div className="grid grid-cols-2 gap-2 mt-3">
+              <div className="grid grid-cols-2 gap-3 mt-3">
                 <DirectionButton
                   label="↑ Arriba"
                   selected={userAnswer === 'up'}
@@ -120,11 +126,13 @@ export default function PlicaQuiz() {
         <div className="font-orbitron text-2xl tracking-[0.25em] text-clear/85">
           Score:{' '}
           <span className="text-cyan text-glow-cyan">
-            {score}/{QUESTIONS.length}
+            {score}/{questions.length}
           </span>
-          {answered === QUESTIONS.length && (
+          {answered === questions.length && (
             <span className="ml-4 text-electric text-glow-electric">
-              {score === QUESTIONS.length ? '◈ DOMINIO TOTAL' : '◈ SIGUE PRACTICANDO'}
+              {score === questions.length
+                ? '◈ DOMINIO TOTAL'
+                : '◈ SIGUE PRACTICANDO'}
             </span>
           )}
         </div>
@@ -149,22 +157,21 @@ type StaffProps = {
 
 function StaffWithNote({ position, showStem, correctStem }: StaffProps) {
   const headY = staffPositionToY(position);
-  const isCorrect = showStem !== null && correctStem !== null && showStem === correctStem;
+  const isCorrect =
+    showStem !== null && correctStem !== null && showStem === correctStem;
 
-  const stemColor = !showStem
-    ? null
-    : isCorrect
-      ? '#22ff66'
-      : '#ff3366';
-
+  const stemColor = !showStem ? null : isCorrect ? '#22ff66' : '#ff3366';
   const isUp = showStem === 'up';
-  const stemX = isUp ? NOTE_X + 14 : NOTE_X - 14;
-  const stemEndY = isUp ? Math.max(headY - 60, 5) : Math.min(headY + 60, VIEW_H - 5);
+  const stemX = isUp ? NOTE_X + 12 : NOTE_X - 12;
+  const stemEndY = isUp
+    ? Math.max(headY - STEM_LEN, 4)
+    : Math.min(headY + STEM_LEN, VIEW_H - 4);
 
   return (
     <svg
       viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-      className="w-full block"
+      className="block mx-auto"
+      style={{ height: SVG_HEIGHT_PX, width: 'auto' }}
       role="img"
       aria-label="Pentagrama con una nota"
     >
@@ -184,44 +191,34 @@ function StaffWithNote({ position, showStem, correctStem }: StaffProps) {
         );
       })}
 
-      {position < 1 &&
-        [-1].map((p) => {
-          const y = staffPositionToY(p);
-          return (
-            <line
-              key={p}
-              x1={NOTE_X - 16}
-              x2={NOTE_X + 16}
-              y1={y}
-              y2={y}
-              stroke="#00ffff"
-              strokeOpacity="0.4"
-              strokeWidth={1.4}
-            />
-          );
-        })}
-      {position > 9 &&
-        [11].map((p) => {
-          const y = staffPositionToY(p);
-          return (
-            <line
-              key={p}
-              x1={NOTE_X - 16}
-              x2={NOTE_X + 16}
-              y1={y}
-              y2={y}
-              stroke="#00ffff"
-              strokeOpacity="0.4"
-              strokeWidth={1.4}
-            />
-          );
-        })}
+      {position < 1 && (
+        <line
+          x1={NOTE_X - 16}
+          x2={NOTE_X + 16}
+          y1={staffPositionToY(-1)}
+          y2={staffPositionToY(-1)}
+          stroke="#00ffff"
+          strokeOpacity="0.4"
+          strokeWidth={1.4}
+        />
+      )}
+      {position > 9 && (
+        <line
+          x1={NOTE_X - 16}
+          x2={NOTE_X + 16}
+          y1={staffPositionToY(11)}
+          y2={staffPositionToY(11)}
+          stroke="#00ffff"
+          strokeOpacity="0.4"
+          strokeWidth={1.4}
+        />
+      )}
 
       <ellipse
         cx={NOTE_X}
         cy={headY}
-        rx={11}
-        ry={8}
+        rx={10}
+        ry={7.5}
         fill="#e0f7ff"
         transform={`rotate(-22 ${NOTE_X} ${headY})`}
         style={{ filter: 'drop-shadow(0 0 8px #e0f7ff)' }}
@@ -287,7 +284,7 @@ function DirectionButton({
       type="button"
       onClick={onClick}
       disabled={isAnswered}
-      className="font-orbitron text-sm tracking-[0.2em] uppercase px-3 py-2 rounded-lg border-2 transition-all disabled:cursor-not-allowed"
+      className="font-orbitron text-base tracking-[0.2em] uppercase px-3 py-2 rounded-lg border-2 transition-all disabled:cursor-not-allowed"
       style={{
         borderColor,
         color: textColor,

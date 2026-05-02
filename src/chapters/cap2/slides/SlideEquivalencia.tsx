@@ -6,32 +6,44 @@ type Row = {
   count: number;
 };
 
-const ROWS: Row[] = [
+const FIRST: Row[] = [
   { kind: 'redonda', count: 1 },
   { kind: 'blanca', count: 2 },
   { kind: 'negra', count: 4 },
+];
+
+const SECOND: Row[] = [
   { kind: 'corchea', count: 8 },
   { kind: 'semicorchea', count: 16 },
 ];
 
-export default function SlideEquivalencia() {
+type Props = {
+  part: 1 | 2;
+};
+
+export default function SlideEquivalencia({ part }: Props) {
+  const rows = part === 1 ? FIRST : SECOND;
+  const intro =
+    part === 1
+      ? 'Una redonda dura igual que dos blancas, o cuatro negras.'
+      : 'La misma redonda son ocho corcheas, o dieciséis semicorcheas.';
+
   return (
-    <div className="flex-1 flex flex-col gap-6 justify-center">
-      <h2 className="heading-2 self-start" data-text="Equivalencias">
-        <span>Equivalencias</span>
+    <div className="flex-1 flex flex-col gap-8 justify-center">
+      <h2
+        className="heading-2 self-start"
+        data-text={`Equivalencias · ${part}/2`}
+      >
+        <span>{`Equivalencias · ${part}/2`}</span>
       </h2>
 
-      <div className="def-box max-w-[1500px]">
+      <div className="def-box max-w-[1700px]">
         <span className="def-symbol" aria-hidden="true">◈</span>
-        <p className="body-text">
-          Una <strong>redonda</strong> dura igual que <strong>2 blancas</strong>,
-          <strong> 4 negras</strong>, <strong>8 corcheas</strong> o{' '}
-          <strong>16 semicorcheas</strong>. Mismo tiempo, distinto detalle.
-        </p>
+        <p className="body-text">{intro}</p>
       </div>
 
-      <div className="flex flex-col gap-3 mt-2">
-        {ROWS.map((r) => (
+      <div className="flex flex-col gap-6 mt-2">
+        {rows.map((r) => (
           <EquivRow key={r.kind} row={r} />
         ))}
       </div>
@@ -40,21 +52,15 @@ export default function SlideEquivalencia() {
 }
 
 function EquivRow({ row }: { row: Row }) {
+  const noteSize = row.count > 8 ? 50 : row.count > 4 ? 60 : 78;
   return (
-    <div className="flex items-center gap-6">
-      <div
-        className="font-orbitron text-2xl tracking-[0.2em] text-cyan text-glow-cyan w-12 text-right"
-      >
+    <div className="flex items-center gap-8">
+      <div className="font-orbitron text-3xl tracking-[0.2em] text-cyan text-glow-cyan w-20 text-right">
         {row.count}×
       </div>
       <div className="flex items-center gap-2 flex-wrap flex-1">
         {Array.from({ length: row.count }, (_, i) => (
-          <NoteSymbol
-            key={i}
-            kind={row.kind}
-            color="#00ffff"
-            size={row.count > 8 ? 36 : row.count > 4 ? 44 : 56}
-          />
+          <NoteSymbol key={i} kind={row.kind} color="#00ffff" size={noteSize} />
         ))}
       </div>
     </div>
