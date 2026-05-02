@@ -29,7 +29,7 @@ export default function SlideEquivalencia({ part }: Props) {
       : 'La misma redonda son ocho corcheas, o dieciséis semicorcheas.';
 
   return (
-    <div className="flex-1 flex flex-col gap-8 justify-center">
+    <div className="flex-1 flex flex-col gap-6 justify-center">
       <h2
         className="heading-2 self-start"
         data-text={`Equivalencias · ${part}/2`}
@@ -37,12 +37,11 @@ export default function SlideEquivalencia({ part }: Props) {
         <span>{`Equivalencias · ${part}/2`}</span>
       </h2>
 
-      <div className="def-box max-w-[1700px]">
-        <span className="def-symbol" aria-hidden="true">◈</span>
-        <p className="body-text">{intro}</p>
-      </div>
+      <p className="font-rajdhani text-3xl text-clear/85 max-w-[1700px]">
+        {intro}
+      </p>
 
-      <div className="flex flex-col gap-6 mt-2">
+      <div className="flex flex-col gap-4 mt-2">
         {rows.map((r) => (
           <EquivRow key={r.kind} row={r} />
         ))}
@@ -54,10 +53,10 @@ export default function SlideEquivalencia({ part }: Props) {
 function EquivRow({ row }: { row: Row }) {
   const noteSize =
     row.count > 8
-      ? 'clamp(28px, 5.5vh, 56px)'
+      ? 'clamp(24px, 4.5vh, 46px)'
       : row.count > 4
-        ? 'clamp(34px, 6.5vh, 64px)'
-        : 'clamp(44px, 8vh, 80px)';
+        ? 'clamp(30px, 5.5vh, 54px)'
+        : 'clamp(38px, 7vh, 70px)';
   return (
     <div className="flex items-center gap-8">
       <div className="font-orbitron text-3xl tracking-[0.2em] text-cyan text-glow-cyan w-20 text-right">

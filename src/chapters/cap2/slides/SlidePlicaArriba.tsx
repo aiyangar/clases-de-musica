@@ -17,10 +17,20 @@ export default function SlidePlicaArriba() {
       </div>
 
       <div className="flex items-center justify-center gap-12 mt-2">
-        <NoteSymbol kind="negra" direction="up" color="#00ffff" size="clamp(96px, 20vh, 180px)" />
-        <NoteSymbol kind="corchea" direction="up" color="#00ffff" size="clamp(96px, 20vh, 180px)" />
         <NoteSymbol
-          kind="semicorchea"
+          kind="negra"
+          direction="up"
+          color="#00ffff"
+          size="clamp(96px, 20vh, 180px)"
+        />
+        <NoteSymbol
+          kind="blanca"
+          direction="up"
+          color="#00ffff"
+          size="clamp(96px, 20vh, 180px)"
+        />
+        <NoteSymbol
+          kind="negra"
           direction="up"
           color="#00ffff"
           size="clamp(96px, 20vh, 180px)"
