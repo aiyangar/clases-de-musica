@@ -1,5 +1,5 @@
-import NoteSymbol from '../visualizations/NoteSymbol';
-import RestSymbol from '../visualizations/RestSymbol';
+import NoteSymbol from '@/components/music/NoteSymbol';
+import RestSymbol from '@/components/music/RestSymbol';
 
 export default function SlideSonidoSilencio() {
   return (
