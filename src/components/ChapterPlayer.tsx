@@ -1,46 +1,27 @@
-import { useCallback, useState } from 'react';
+import { type ComponentType, useCallback, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Background from './Background';
 import Navigation from './Navigation';
 import SlideFrame from './SlideFrame';
-import SlidePortada from './slides/SlidePortada';
-import SlideMusica from './slides/SlideMusica';
-import SlideAltura from './slides/SlideAltura';
-import SlideIntensidad from './slides/SlideIntensidad';
-import SlideTimbre from './slides/SlideTimbre';
-import SlideMelodia from './slides/SlideMelodia';
-import SlideArmonia from './slides/SlideArmonia';
-import SlideRitmo from './slides/SlideRitmo';
 import { useKeyboardNav } from '@/hooks/useKeyboardNav';
 
-const SLIDES = [
-  SlidePortada,
-  SlideMusica,
-  SlideAltura,
-  SlideIntensidad,
-  SlideTimbre,
-  SlideMelodia,
-  SlideArmonia,
-  SlideRitmo,
-];
-
-const TOTAL = SLIDES.length;
-
 type Props = {
+  slides: Array<ComponentType>;
   onExit?: () => void;
 };
 
-export default function Presentation({ onExit }: Props = {}) {
+export default function ChapterPlayer({ slides, onExit }: Props) {
+  const total = slides.length;
   const [index, setIndex] = useState(0);
 
   const next = useCallback(() => {
-    setIndex((i) => Math.min(i + 1, TOTAL - 1));
-  }, []);
+    setIndex((i) => Math.min(i + 1, total - 1));
+  }, [total]);
   const prev = useCallback(() => {
     setIndex((i) => Math.max(i - 1, 0));
   }, []);
   const first = useCallback(() => setIndex(0), []);
-  const last = useCallback(() => setIndex(TOTAL - 1), []);
+  const last = useCallback(() => setIndex(total - 1), [total]);
 
   useKeyboardNav({
     onNext: next,
@@ -50,7 +31,7 @@ export default function Presentation({ onExit }: Props = {}) {
     onEscape: onExit,
   });
 
-  const Current = SLIDES[index]!;
+  const Current = slides[index]!;
 
   return (
     <div className="relative h-screen w-screen overflow-hidden">
@@ -73,7 +54,7 @@ export default function Presentation({ onExit }: Props = {}) {
         </AnimatePresence>
       </main>
 
-      <Navigation current={index} total={TOTAL} onPrev={prev} onNext={next} />
+      <Navigation current={index} total={total} onPrev={prev} onNext={next} />
     </div>
   );
 }

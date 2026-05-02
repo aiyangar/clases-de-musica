@@ -1,4 +1,12 @@
+import type { ComponentType } from 'react';
+import Cap1Presentation from '@/chapters/cap1/Cap1Presentation';
+import Cap2Presentation from '@/chapters/cap2/Cap2Presentation';
+
 export type ChapterStatus = 'available' | 'mockup';
+
+export type ChapterPresentationProps = {
+  onExit?: () => void;
+};
 
 export type ChapterMeta = {
   id: string;
@@ -9,6 +17,7 @@ export type ChapterMeta = {
   topics: string[];
   status: ChapterStatus;
   accent: 'cyan' | 'magenta' | 'electric';
+  presentation?: ComponentType<ChapterPresentationProps>;
 };
 
 export const CHAPTERS: ChapterMeta[] = [
@@ -26,22 +35,24 @@ export const CHAPTERS: ChapterMeta[] = [
     ],
     status: 'available',
     accent: 'cyan',
+    presentation: Cap1Presentation,
   },
   {
     id: 'cap-2',
     number: 'II',
-    title: 'Notas y Escalas',
-    tagline: 'El Alfabeto Arcano',
+    title: 'Figuras y Valores',
+    tagline: 'Códigos del Tiempo',
     description:
-      'Las siete notas, sus alteraciones y cómo se ordenan en escalas mayor y menor para crear sensaciones distintas.',
+      'Las ocho figuras musicales con sus silencios, cómo se relacionan en duración y la regla de la plica.',
     topics: [
-      'Las 7 notas naturales',
-      'Sostenidos y bemoles',
-      'Escala mayor vs. menor',
-      'Tonalidad y centro tonal',
+      'Las 8 figuras (sonidos y silencios)',
+      'Equivalencias de duración',
+      'Regla de la plica',
+      'Ejercicio interactivo',
     ],
-    status: 'mockup',
+    status: 'available',
     accent: 'magenta',
+    presentation: Cap2Presentation,
   },
   {
     id: 'cap-3',
