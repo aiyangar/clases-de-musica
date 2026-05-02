@@ -60,11 +60,15 @@ function FigureCard({ row }: { row: Row }) {
         background: 'rgba(15, 0, 35, 0.55)',
         border: '2px solid rgba(0, 255, 255, 0.5)',
         boxShadow: '0 0 26px rgba(0, 255, 255, 0.22)',
-        minHeight: 280,
+        minHeight: 'clamp(180px, 36vh, 320px)',
       }}
     >
       <div className="flex-1 flex items-center justify-center">
-        <NoteSymbol kind={row.kind} color="#00ffff" size={100} />
+        <NoteSymbol
+          kind={row.kind}
+          color="#00ffff"
+          size="clamp(56px, 11vh, 110px)"
+        />
       </div>
       <div className="text-center">
         <div className="font-orbitron text-xl md:text-2xl tracking-[0.18em] text-clear">

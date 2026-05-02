@@ -25,7 +25,7 @@ const NOTE_X = 110;
 const VIEW_W = 220;
 const VIEW_H = 130;
 const STEM_LEN = 38;
-const SVG_HEIGHT_PX = 116;
+const SVG_HEIGHT_CSS = 'clamp(70px, 13vh, 120px)';
 
 function staffPositionToY(pos: number) {
   return STAFF_TOP_Y + pos * STAFF_GAP;
@@ -171,7 +171,7 @@ function StaffWithNote({ position, showStem, correctStem }: StaffProps) {
     <svg
       viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
       className="block mx-auto"
-      style={{ height: SVG_HEIGHT_PX, width: 'auto' }}
+      style={{ height: SVG_HEIGHT_CSS, width: 'auto' }}
       role="img"
       aria-label="Pentagrama con una nota"
     >

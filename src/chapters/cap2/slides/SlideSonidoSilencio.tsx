@@ -10,7 +10,11 @@ export default function SlideSonidoSilencio() {
 
       <div className="flex items-center justify-center gap-12 mt-4">
         <div className="flex flex-col items-center gap-4">
-          <NoteSymbol kind="negra" color="#00ffff" size={180} />
+          <NoteSymbol
+            kind="negra"
+            color="#00ffff"
+            size="clamp(96px, 22vh, 200px)"
+          />
           <span className="font-orbitron text-2xl tracking-[0.25em] text-cyan text-glow-cyan">
             NEGRA
           </span>
@@ -21,7 +25,11 @@ export default function SlideSonidoSilencio() {
         </span>
 
         <div className="flex flex-col items-center gap-4">
-          <RestSymbol kind="negra" color="#ff00ff" size={180} />
+          <RestSymbol
+            kind="negra"
+            color="#ff00ff"
+            size="clamp(96px, 22vh, 200px)"
+          />
           <span className="font-orbitron text-2xl tracking-[0.25em] text-magenta text-glow-magenta">
             SILENCIO
           </span>

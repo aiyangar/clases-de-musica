@@ -23,7 +23,7 @@ type Props = {
   kind: FigureKind;
   direction?: 'up' | 'down';
   color?: string;
-  size?: number;
+  size?: number | string;
   className?: string;
 };
 
@@ -34,17 +34,19 @@ export default function NoteSymbol({
   size = 80,
   className,
 }: Props) {
+  const fontSize = typeof size === 'number' ? `${size}px` : size;
+
   return (
     <span
       className={`font-music inline-flex items-center justify-center select-none ${className ?? ''}`}
       style={{
-        fontSize: `${size}px`,
+        fontSize,
         lineHeight: 1,
         color,
         textShadow: `0 0 14px ${color}, 0 0 28px ${color}88`,
         transform: direction === 'down' ? 'rotate(180deg)' : undefined,
-        minWidth: `${size * 0.7}px`,
-        minHeight: `${size * 1.5}px`,
+        minWidth: '0.7em',
+        minHeight: '1.5em',
       }}
       aria-label={`Figura musical ${kind}${direction === 'down' ? ' con plica abajo' : ''}`}
     >

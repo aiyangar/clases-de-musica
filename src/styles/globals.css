@@ -40,25 +40,30 @@ body {
   color: var(--color-base);
 }
 
-/* ============ TIPOGRAFÍA — TV LARGE ============ */
+/* ============ TIPOGRAFÍA FLUIDA ============
+   Escalan con el tamaño del viewport:
+   clamp(min, min(vw, vh)*X, max) — toma la dimensión más chica
+   y respeta los límites mínimo y máximo. */
 .heading-1 {
   font-family: 'Orbitron', system-ui, sans-serif;
   font-weight: 900;
-  font-size: 8.5em;
+  font-size: clamp(2.5rem, min(7vw, 13vh), 8em);
   line-height: 0.95;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .heading-2 {
   font-family: 'Orbitron', system-ui, sans-serif;
   font-weight: 800;
-  font-size: 6.2em;
+  font-size: clamp(1.75rem, min(5.4vw, 10vh), 6em);
   line-height: 1;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   position: relative;
   display: inline-block;
+  white-space: nowrap;
 }
 
 .heading-2::before,
@@ -91,16 +96,17 @@ body {
 .heading-3 {
   font-family: 'Orbitron', system-ui, sans-serif;
   font-weight: 700;
-  font-size: 3.2em;
+  font-size: clamp(1.1rem, min(2.6vw, 4.8vh), 3em);
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .body-text,
 .body-text p,
 .body-text li {
   font-family: 'Rajdhani', system-ui, sans-serif;
-  font-size: 2.7em;
+  font-size: clamp(1rem, min(2.2vw, 4vh), 2.5em);
   line-height: 1.35;
   font-weight: 400;
   color: var(--color-clear);
@@ -108,7 +114,7 @@ body {
 
 .subtitle {
   font-family: 'Rajdhani', system-ui, sans-serif;
-  font-size: 2.9em;
+  font-size: clamp(1.05rem, min(2.4vw, 4.4vh), 2.6em);
   font-weight: 600;
   letter-spacing: 0.04em;
   color: rgba(224, 247, 255, 0.85);
@@ -116,12 +122,13 @@ body {
 
 .tagline {
   font-family: 'Cinzel Decorative', serif;
-  font-size: 2.8em;
+  font-size: clamp(1rem, min(2.3vw, 4.2vh), 2.5em);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-cyan);
   text-shadow: var(--shadow-cyan);
+  white-space: nowrap;
 }
 
 .body-text strong {
@@ -368,21 +375,8 @@ body {
   pointer-events: none;
 }
 
-/* Responsive: scale typography down on small screens */
-@media (max-width: 1024px) {
-  .heading-1 { font-size: 4.8em; }
-  .heading-2 { font-size: 3.6em; }
-  .heading-3 { font-size: 2em; }
-  .body-text, .body-text p, .body-text li { font-size: 1.5em; }
-  .subtitle { font-size: 1.7em; }
-  .tagline { font-size: 1.6em; }
-}
+/* Botones de navegación más pequeños en mobile (no es typography del slide,
+   por eso no necesita clamp). */
 @media (max-width: 640px) {
-  .heading-1 { font-size: 3em; }
-  .heading-2 { font-size: 2.4em; }
-  .heading-3 { font-size: 1.4em; }
-  .body-text, .body-text p, .body-text li { font-size: 1.1em; }
-  .subtitle { font-size: 1.2em; }
-  .tagline { font-size: 1.1em; }
   .nav-btn { width: 56px; height: 56px; font-size: 1.5rem; }
 }

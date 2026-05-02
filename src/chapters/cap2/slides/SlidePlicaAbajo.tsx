@@ -17,18 +17,18 @@ export default function SlidePlicaAbajo() {
       </div>
 
       <div className="flex items-center justify-center gap-12 mt-2">
-        <NoteSymbol kind="negra" direction="down" color="#ff00ff" size={170} />
+        <NoteSymbol kind="negra" direction="down" color="#ff00ff" size="clamp(96px, 20vh, 180px)" />
         <NoteSymbol
           kind="corchea"
           direction="down"
           color="#ff00ff"
-          size={170}
+          size="clamp(96px, 20vh, 180px)"
         />
         <NoteSymbol
           kind="semicorchea"
           direction="down"
           color="#ff00ff"
-          size={170}
+          size="clamp(96px, 20vh, 180px)"
         />
       </div>
     </div>

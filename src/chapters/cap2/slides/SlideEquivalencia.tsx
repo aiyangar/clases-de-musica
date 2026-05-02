@@ -52,7 +52,12 @@ export default function SlideEquivalencia({ part }: Props) {
 }
 
 function EquivRow({ row }: { row: Row }) {
-  const noteSize = row.count > 8 ? 50 : row.count > 4 ? 60 : 78;
+  const noteSize =
+    row.count > 8
+      ? 'clamp(28px, 5.5vh, 56px)'
+      : row.count > 4
+        ? 'clamp(34px, 6.5vh, 64px)'
+        : 'clamp(44px, 8vh, 80px)';
   return (
     <div className="flex items-center gap-8">
       <div className="font-orbitron text-3xl tracking-[0.2em] text-cyan text-glow-cyan w-20 text-right">
