@@ -1,4 +1,4 @@
-import ChapterPlayer from './ChapterPlayer';
+import ChapterPlayer from '@/components/ChapterPlayer';
 import SlidePortada from './slides/SlidePortada';
 import SlideMusica from './slides/SlideMusica';
 import SlideAltura from './slides/SlideAltura';
@@ -23,6 +23,6 @@ type Props = {
   onExit?: () => void;
 };
 
-export default function Presentation({ onExit }: Props = {}) {
+export default function Cap1Presentation({ onExit }: Props = {}) {
   return <ChapterPlayer slides={SLIDES} onExit={onExit} />;
 }

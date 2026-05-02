@@ -1,4 +1,5 @@
 import NoteSymbol from '../visualizations/NoteSymbol';
+import RestSymbol from '../visualizations/RestSymbol';
 
 export default function SlideQueSon() {
   return (
@@ -27,18 +28,7 @@ export default function SlideQueSon() {
         <div className="flex items-center justify-center gap-8">
           <NoteSymbol kind="negra" color="#00ffff" size={140} />
           <span className="font-orbitron text-6xl text-electric text-glow-electric">=</span>
-          <span
-            className="font-music select-none"
-            style={{
-              fontSize: '180px',
-              lineHeight: 1,
-              color: '#ff00ff',
-              textShadow: '0 0 18px #ff00ff',
-            }}
-            aria-label="Silencio de negra"
-          >
-            {'\u{1D13D}'}
-          </span>
+          <RestSymbol kind="negra" color="#ff00ff" size={140} />
         </div>
       </div>
     </div>

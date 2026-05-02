@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import Presentation from '@/components/Presentation';
+import Cap1Presentation from '@/chapters/cap1/Cap1Presentation';
 import Cap2Presentation from '@/chapters/cap2/Cap2Presentation';
 
 export type ChapterStatus = 'available' | 'mockup';
@@ -35,7 +35,7 @@ export const CHAPTERS: ChapterMeta[] = [
     ],
     status: 'available',
     accent: 'cyan',
-    presentation: Presentation,
+    presentation: Cap1Presentation,
   },
   {
     id: 'cap-2',
