@@ -355,6 +355,11 @@ body {
 .text-glow-cyan    { text-shadow: var(--shadow-cyan); }
 .text-glow-electric { text-shadow: var(--shadow-electric); }
 
+.font-music {
+  font-family: 'Noto Music', 'Apple Symbols', 'Segoe UI Symbol', serif;
+  font-feature-settings: 'liga' 1;
+}
+
 .arcane-symbol {
   position: absolute;
   opacity: 0.18;
