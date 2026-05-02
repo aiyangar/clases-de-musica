@@ -1,0 +1,72 @@
+import RestSymbol from '../visualizations/RestSymbol';
+import type { FigureKind } from '../visualizations/NoteSymbol';
+
+type Row = {
+  kind: FigureKind;
+  name: string;
+  pulses: string;
+};
+
+const ROWS: Row[] = [
+  { kind: 'redonda', name: 'de redonda', pulses: '4' },
+  { kind: 'blanca', name: 'de blanca', pulses: '2' },
+  { kind: 'negra', name: 'de negra', pulses: '1' },
+  { kind: 'corchea', name: 'de corchea', pulses: '½' },
+  { kind: 'semicorchea', name: 'de semicorchea', pulses: '¼' },
+  { kind: 'fusa', name: 'de fusa', pulses: '⅛' },
+  { kind: 'semifusa', name: 'de semifusa', pulses: '¹⁄₁₆' },
+  { kind: 'garrapatea', name: 'de garrapatea', pulses: '¹⁄₃₂' },
+];
+
+export default function SlideSilencios() {
+  return (
+    <div className="flex-1 flex flex-col gap-6 justify-center">
+      <h2 className="heading-2 self-start" data-text="Los silencios">
+        <span>Los silencios</span>
+      </h2>
+
+      <p className="font-rajdhani text-3xl text-clear/85 mb-2">
+        El silencio también <em className="text-electric text-glow-electric not-italic font-bold">se mide</em>.
+        Cada figura tiene su silencio gemelo de igual duración.
+      </p>
+
+      <div className="grid grid-cols-4 gap-4">
+        {ROWS.map((r) => (
+          <RestCard key={r.kind} row={r} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RestCard({ row }: { row: Row }) {
+  return (
+    <div
+      className="rounded-2xl px-3 py-4 flex flex-col items-center justify-between gap-2 backdrop-blur-md"
+      style={{
+        background: 'rgba(15, 0, 35, 0.55)',
+        border: '2px solid rgba(255, 0, 255, 0.45)',
+        boxShadow: '0 0 22px rgba(255, 0, 255, 0.2)',
+        minHeight: 240,
+      }}
+    >
+      <div className="flex-1 flex items-center justify-center">
+        <RestSymbol kind={row.kind} color="#ff00ff" size={70} />
+      </div>
+      <div className="text-center">
+        <div className="font-orbitron text-base md:text-lg tracking-[0.18em] text-clear">
+          Silencio
+        </div>
+        <div className="font-rajdhani text-base md:text-lg text-clear/85 -mt-1">
+          {row.name}
+        </div>
+        <div className="font-orbitron text-2xl md:text-3xl text-electric text-glow-electric mt-1">
+          {row.pulses}
+        </div>
+        <div className="font-rajdhani text-xs md:text-sm tracking-widest uppercase text-clear/60">
+          pulsos
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import Dashboard from '@/components/Dashboard';
-import Presentation from '@/components/Presentation';
 import MockupPresentation from '@/components/MockupPresentation';
 import BackToDashboardButton from '@/components/BackToDashboardButton';
 import { CHAPTERS, findChapter } from '@/chapters/registry';
+import type { ChapterMeta } from '@/chapters/registry';
 
-type View =
-  | { kind: 'dashboard' }
-  | { kind: 'chapter'; id: string };
+type View = { kind: 'dashboard' } | { kind: 'chapter'; id: string };
 
 const HOME = '#/';
 
@@ -42,13 +40,12 @@ export default function App() {
   }
 
   const chapter = findChapter(view.id) ?? CHAPTERS[0]!;
-  const isMockup = chapter.status === 'mockup';
 
   return (
     <>
       <BackToDashboardButton onClick={goDashboard} />
-      {!isMockup ? (
-        <Presentation onExit={goDashboard} />
+      {chapter.presentation ? (
+        <chapter.presentation onExit={goDashboard} />
       ) : (
         <MockupView chapter={chapter} onExit={goDashboard} />
       )}
@@ -60,7 +57,7 @@ function MockupView({
   chapter,
   onExit,
 }: {
-  chapter: ReturnType<typeof findChapter>;
+  chapter: ChapterMeta;
   onExit: () => void;
 }) {
   useEffect(() => {
@@ -74,6 +71,5 @@ function MockupView({
     return () => window.removeEventListener('keydown', handler);
   }, [onExit]);
 
-  if (!chapter) return null;
   return <MockupPresentation chapter={chapter} />;
 }
