@@ -26,7 +26,11 @@ const SLIDES = [
 
 const TOTAL = SLIDES.length;
 
-export default function Presentation() {
+type Props = {
+  onExit?: () => void;
+};
+
+export default function Presentation({ onExit }: Props = {}) {
   const [index, setIndex] = useState(0);
 
   const next = useCallback(() => {
@@ -38,7 +42,13 @@ export default function Presentation() {
   const first = useCallback(() => setIndex(0), []);
   const last = useCallback(() => setIndex(TOTAL - 1), []);
 
-  useKeyboardNav({ onNext: next, onPrev: prev, onFirst: first, onLast: last });
+  useKeyboardNav({
+    onNext: next,
+    onPrev: prev,
+    onFirst: first,
+    onLast: last,
+    onEscape: onExit,
+  });
 
   const Current = SLIDES[index]!;
 
