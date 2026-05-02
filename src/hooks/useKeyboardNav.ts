@@ -5,9 +5,10 @@ type Handlers = {
   onPrev: () => void;
   onFirst: () => void;
   onLast: () => void;
+  onEscape?: () => void;
 };
 
-export function useKeyboardNav({ onNext, onPrev, onFirst, onLast }: Handlers) {
+export function useKeyboardNav({ onNext, onPrev, onFirst, onLast, onEscape }: Handlers) {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       switch (e.key) {
@@ -28,9 +29,15 @@ export function useKeyboardNav({ onNext, onPrev, onFirst, onLast }: Handlers) {
           e.preventDefault();
           onLast();
           break;
+        case 'Escape':
+          if (onEscape) {
+            e.preventDefault();
+            onEscape();
+          }
+          break;
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [onNext, onPrev, onFirst, onLast]);
+  }, [onNext, onPrev, onFirst, onLast, onEscape]);
 }
