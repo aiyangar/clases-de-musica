@@ -6,8 +6,10 @@ export default function PulseBeat() {
       {COLORS.map((c, i) => (
         <div
           key={c + i}
-          className="w-32 h-32 rounded-full"
+          className="rounded-full"
           style={{
+            width: 'clamp(72px, 14vh, 144px)',
+            height: 'clamp(72px, 14vh, 144px)',
             background: `radial-gradient(circle at 30% 30%, #ffffff 0%, ${c} 38%, rgba(0,0,0,0.4) 100%)`,
             boxShadow: `0 0 28px ${c}, 0 0 56px ${c}`,
             animation: `beatPulse 1.2s ease-in-out ${i * 0.15}s infinite`,

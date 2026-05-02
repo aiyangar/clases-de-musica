@@ -340,20 +340,21 @@ body {
   box-shadow: 0 0 36px rgba(0, 255, 255, 0.6);
 }
 .timbre-emoji {
-  font-size: 5.4rem;
+  font-size: clamp(2.5rem, min(5.5vw, 10vh), 6rem);
   filter: drop-shadow(0 0 18px currentColor);
+  line-height: 1;
 }
 .timbre-name {
   font-family: 'Orbitron', sans-serif;
   font-weight: 800;
-  font-size: 1.6rem;
+  font-size: clamp(0.95rem, min(1.4vw, 2.6vh), 1.8rem);
   letter-spacing: 0.14em;
   margin-top: 1rem;
   color: var(--color-clear);
 }
 .timbre-desc {
   margin-top: 0.6rem;
-  font-size: 1.25rem;
+  font-size: clamp(0.85rem, min(1.1vw, 2vh), 1.4rem);
   color: rgba(224, 247, 255, 0.8);
 }
 
