@@ -8,7 +8,7 @@ type Props = {
 export default function SlideFrame({ children, className = '' }: Props) {
   return (
     <div
-      className={`neon-frame relative w-[92vw] max-w-[1800px] h-[82vh] mx-auto overflow-hidden flex ${className}`}
+      className={`neon-frame relative w-full h-full overflow-hidden flex ${className}`}
     >
       <span className="hud-corner tl" aria-hidden="true" />
       <span className="hud-corner tr" aria-hidden="true" />
@@ -17,7 +17,7 @@ export default function SlideFrame({ children, className = '' }: Props) {
 
       <ArcaneSymbols />
 
-      <div className="relative z-10 flex-1 flex flex-col p-12 lg:p-16 overflow-hidden">
+      <div className="relative z-10 flex-1 flex flex-col p-14 overflow-hidden">
         {children}
       </div>
     </div>

@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react';
 import Cap1Presentation from '@/chapters/cap1/Cap1Presentation';
 import Cap2Presentation from '@/chapters/cap2/Cap2Presentation';
+import Cap3Presentation from '@/chapters/cap3/Cap3Presentation';
 
 export type ChapterStatus = 'available' | 'mockup';
 
@@ -57,18 +58,19 @@ export const CHAPTERS: ChapterMeta[] = [
   {
     id: 'cap-3',
     number: 'III',
-    title: 'Acordes y Progresiones',
-    tagline: 'Geometría del Sentimiento',
+    title: 'Signos Musicales',
+    tagline: 'Códigos del Pentagrama',
     description:
-      'Cómo se apilan las notas en acordes y por qué ciertas secuencias hacen llorar al estadio entero.',
+      'El lenguaje escrito de la música: pentagrama, claves, notas y compás. Aprender a leer el mapa antes de tocarlo.',
     topics: [
-      'Tríadas mayor y menor',
-      'Inversiones',
-      'Progresión I–V–vi–IV',
-      'Tensión y resolución',
+      'Notación y entonación',
+      'Pentagrama: líneas y espacios',
+      'Claves de Sol, Fa y Do',
+      'Compás y líneas divisorias',
     ],
-    status: 'mockup',
+    status: 'available',
     accent: 'electric',
+    presentation: Cap3Presentation,
   },
 ];
 
