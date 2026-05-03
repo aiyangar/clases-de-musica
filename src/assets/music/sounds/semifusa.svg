@@ -1,3 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 200" fill="currentColor">
-  <!-- TODO: semifusa -->
+  <ellipse cx="30" cy="175" rx="12" ry="8.5" transform="rotate(-18 30 175)"/>
+  <line x1="40.5" y1="170" x2="40.5" y2="80" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 40.5,80 C 55,83 58,92 52,103 C 52,96 47,90 40.5,91 Z"/>
+  <path d="M 40.5,96 C 55,99 58,108 52,119 C 52,112 47,106 40.5,107 Z"/>
+  <path d="M 40.5,112 C 55,115 58,124 52,135 C 52,128 47,122 40.5,123 Z"/>
+  <path d="M 40.5,128 C 55,131 58,140 52,151 C 52,144 47,138 40.5,139 Z"/>
 </svg>
