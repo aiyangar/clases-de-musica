@@ -1,11 +1,27 @@
+import Pentagrama from '@/components/music/Pentagrama';
+
 export default function SlideNotasFaLineas() {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center text-center gap-6">
-      <span className="font-orbitron text-2xl tracking-[0.4em] text-electric text-glow-electric">
-        SLIDE 12 / 18
-      </span>
-      <h2 className="heading-2"><span>Notas (Fa) — líneas</span></h2>
-      <p className="body-text opacity-60">Stub — contenido en task 4</p>
+    <div className="flex-1 flex flex-col gap-8 items-center">
+      <h2 className="heading-2" data-text="Líneas en clave de Fa">
+        <span>Líneas en clave de Fa</span>
+      </h2>
+      <div className="flex-1 flex items-center justify-center text-magenta">
+        <Pentagrama
+          clef="fa"
+          notes={[
+            { step: 0, label: 'Sol' },
+            { step: 2, label: 'Si' },
+            { step: 4, label: 'Re' },
+            { step: 6, label: 'Fa' },
+            { step: 8, label: 'La' },
+          ]}
+          width={900}
+        />
+      </div>
+      <p className="body-text text-center">
+        <strong>Sol · Si · Re · Fa · La</strong> — de abajo hacia arriba.
+      </p>
     </div>
   );
 }

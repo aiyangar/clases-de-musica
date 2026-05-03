@@ -42,10 +42,10 @@ export default function ChapterPlayer({ slides, onExit }: Props) {
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
-            initial={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
-            transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
             className="w-full h-full flex items-center justify-center"
           >
             <SlideStage>
