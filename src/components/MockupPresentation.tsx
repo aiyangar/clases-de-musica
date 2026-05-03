@@ -21,7 +21,7 @@ export default function MockupPresentation({ chapter }: Props) {
     <div className="relative h-screen w-screen overflow-hidden">
       <Background />
 
-      <main className="relative z-10 h-full w-full flex items-center justify-center">
+      <main className="relative z-10 h-full w-full flex items-center justify-center pt-20 pb-32">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
           animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
