@@ -45,7 +45,7 @@ export default function Pentagrama({
   highlightLines = [],
   highlightSpaces = [],
   width = '100%',
-  height = 'auto',
+  height,
   className,
 }: Props) {
   const staffLines = [1, 2, 3, 4, 5].map((n) => ({
@@ -58,10 +58,13 @@ export default function Pentagrama({
     y: STAFF_BOTTOM - (n - 1) * LINE_GAP - LINE_GAP / 2,
   }));
 
+  const resolvedHeight =
+    height ?? (typeof width === 'number' ? (width * VB_HEIGHT) / VB_WIDTH : undefined);
+
   return (
     <svg
       className={className}
-      style={{ width, height }}
+      style={{ width, ...(resolvedHeight !== undefined ? { height: resolvedHeight } : {}) }}
       viewBox={`0 0 ${VB_WIDTH} ${VB_HEIGHT}`}
       role="img"
       aria-label="Pentagrama"
@@ -87,7 +90,7 @@ export default function Pentagrama({
           x2={STAFF_X_END}
           y2={y}
           stroke={highlightLines.includes(n) ? '#ffff00' : 'currentColor'}
-          strokeWidth={highlightLines.includes(n) ? 3 : 1.5}
+          strokeWidth={highlightLines.includes(n) ? 4 : 2.5}
           style={
             highlightLines.includes(n)
               ? { filter: 'drop-shadow(0 0 6px #ffff00)' }
@@ -104,7 +107,7 @@ export default function Pentagrama({
           x2={STAFF_X_END - 80}
           y2={STAFF_TOP - (i + 1) * LINE_GAP}
           stroke="currentColor"
-          strokeWidth={1.2}
+          strokeWidth={2}
           opacity={0.7}
         />
       ))}
@@ -117,7 +120,7 @@ export default function Pentagrama({
           x2={STAFF_X_END - 80}
           y2={STAFF_BOTTOM + (i + 1) * LINE_GAP}
           stroke="currentColor"
-          strokeWidth={1.2}
+          strokeWidth={2}
           opacity={0.7}
         />
       ))}
@@ -126,9 +129,9 @@ export default function Pentagrama({
         staffLines.map(({ n, y }) => (
           <text
             key={`ln-${n}`}
-            x={STAFF_X_START - 22}
-            y={y + 5}
-            fontSize="20"
+            x={STAFF_X_START - 20}
+            y={y + 9}
+            fontSize="28"
             fontFamily="Orbitron, sans-serif"
             fontWeight={800}
             fill="#00ffff"
@@ -142,9 +145,9 @@ export default function Pentagrama({
         staffSpaces.map((s) => (
           <text
             key={`sn-${s.n}`}
-            x={STAFF_X_START - 22}
-            y={s.y + 6}
-            fontSize="18"
+            x={STAFF_X_START - 20}
+            y={s.y + 9}
+            fontSize="26"
             fontFamily="Orbitron, sans-serif"
             fontWeight={700}
             fill="#ff00ff"
