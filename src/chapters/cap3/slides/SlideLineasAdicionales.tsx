@@ -8,8 +8,6 @@ export default function SlideLineasAdicionales() {
       </h2>
       <div className="flex-1 flex items-center justify-center text-cyan">
         <Pentagrama
-          ledgerLinesAbove={2}
-          ledgerLinesBelow={2}
           notes={[
             { step: 12, label: 'arriba', color: '#ffff00' },
             { step: -4, label: 'abajo', color: '#ffff00' },
