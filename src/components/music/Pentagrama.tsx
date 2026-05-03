@@ -1,5 +1,4 @@
 import type { ClefKind, StaffNote, FigureKind } from './types';
-import ClefSymbol from './ClefSymbol';
 
 type Props = {
   clef?: ClefKind;
@@ -41,6 +40,22 @@ const NOTE_GLYPHS: Record<FigureKind, string> = {
   garrapatea: '\u{1D164}',
 };
 
+const CLEF_GLYPHS: Record<ClefKind, string> = {
+  sol: '\u{1D11E}',
+  fa: '\u{1D122}',
+  do: '\u{1D121}',
+};
+
+const CLEF_FONT_SIZE = 130;
+const CLEF_X = STAFF_X_START + 8 + CLEF_WIDTH / 2;
+const CLEF_BASELINE_Y: Record<ClefKind, number> = {
+  sol: 213,
+  fa: 175,
+  do: 195,
+};
+const NOTE_LABEL_FONT_SIZE = 28;
+const NOTE_LABEL_OFFSET_BELOW_STAFF = 38;
+
 /**
  * Convert staff step → y coordinate.
  * step 0 = bottom line (y = STAFF_BOTTOM); each step up subtracts LINE_GAP / 2.
@@ -74,9 +89,12 @@ function shouldFlipFor(step: number, figure: FigureKind): boolean {
 function labelYFor(step: number): number {
   if (step > 8) return stepToY(step) - NOTEHEAD_HALF_HEIGHT - 14;
   if (step < 0) {
-    return Math.max(stepToY(step) + NOTEHEAD_HALF_HEIGHT + 24, STAFF_BOTTOM + 50);
+    return Math.max(
+      stepToY(step) + NOTEHEAD_HALF_HEIGHT + 24,
+      STAFF_BOTTOM + NOTE_LABEL_OFFSET_BELOW_STAFF,
+    );
   }
-  return STAFF_BOTTOM + 50;
+  return STAFF_BOTTOM + NOTE_LABEL_OFFSET_BELOW_STAFF;
 }
 
 export default function Pentagrama({
@@ -192,25 +210,17 @@ export default function Pentagrama({
         ))}
 
       {clef && (
-        <foreignObject
-          x={STAFF_X_START + 8}
-          y={STAFF_TOP - 30}
-          width={CLEF_WIDTH}
-          height={STAFF_BOTTOM - STAFF_TOP + 60}
+        <text
+          x={CLEF_X}
+          y={CLEF_BASELINE_Y[clef]}
+          fontSize={CLEF_FONT_SIZE}
+          fontFamily={MUSIC_FONT_STACK}
+          fill="currentColor"
+          textAnchor="middle"
+          style={{ filter: 'drop-shadow(0 0 12px currentColor)' }}
         >
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'currentColor',
-            }}
-          >
-            <ClefSymbol clef={clef} size={120} color="currentColor" />
-          </div>
-        </foreignObject>
+          {CLEF_GLYPHS[clef]}
+        </text>
       )}
 
       {notes.map((note, idx) => {
@@ -240,7 +250,7 @@ export default function Pentagrama({
               <text
                 x={x}
                 y={labelYFor(note.step)}
-                fontSize="22"
+                fontSize={NOTE_LABEL_FONT_SIZE}
                 fontFamily="Orbitron, sans-serif"
                 fontWeight={800}
                 fill={noteColor}
