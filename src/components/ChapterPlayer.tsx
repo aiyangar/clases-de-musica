@@ -38,7 +38,7 @@ export default function ChapterPlayer({ slides, onExit }: Props) {
     <div className="relative h-screen w-screen overflow-hidden">
       <Background />
 
-      <main className="relative z-10 h-full w-full flex items-center justify-center">
+      <main className="relative z-10 h-full w-full flex items-center justify-center pt-20 pb-32">
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
