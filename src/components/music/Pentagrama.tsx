@@ -16,11 +16,11 @@ type Props = {
   className?: string;
 };
 
-const STAFF_TOP = 100;
-const STAFF_BOTTOM = 200;
+const STAFF_TOP = 110;
+const STAFF_BOTTOM = 210;
 const LINE_GAP = (STAFF_BOTTOM - STAFF_TOP) / 4;
 const VB_WIDTH = 800;
-const VB_HEIGHT = 300;
+const VB_HEIGHT = 320;
 const STAFF_X_START = 60;
 const STAFF_X_END = VB_WIDTH - 40;
 const CLEF_WIDTH = 70;
@@ -129,13 +129,14 @@ export default function Pentagrama({
         staffLines.map(({ n, y }) => (
           <text
             key={`ln-${n}`}
-            x={STAFF_X_START - 20}
-            y={y + 9}
+            x={42}
+            y={y}
             fontSize="28"
             fontFamily="Orbitron, sans-serif"
             fontWeight={800}
             fill="#00ffff"
-            textAnchor="end"
+            textAnchor="middle"
+            dominantBaseline="middle"
           >
             {n}
           </text>
@@ -145,13 +146,14 @@ export default function Pentagrama({
         staffSpaces.map((s) => (
           <text
             key={`sn-${s.n}`}
-            x={STAFF_X_START - 20}
-            y={s.y + 9}
+            x={42}
+            y={s.y}
             fontSize="26"
             fontFamily="Orbitron, sans-serif"
             fontWeight={700}
             fill="#ff00ff"
-            textAnchor="end"
+            textAnchor="middle"
+            dominantBaseline="middle"
           >
             {s.n}
           </text>
