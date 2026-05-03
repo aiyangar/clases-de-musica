@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import Background from './Background';
 import SlideFrame from './SlideFrame';
+import SlideStage from './SlideStage';
 import type { ChapterMeta } from '@/chapters/registry';
 
 const ACCENT_HEX: Record<ChapterMeta['accent'], string> = {
@@ -25,9 +26,10 @@ export default function MockupPresentation({ chapter }: Props) {
           initial={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
           animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
           transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-          className="w-full flex items-center justify-center"
+          className="w-full h-full flex items-center justify-center"
         >
-          <SlideFrame>
+          <SlideStage>
+            <SlideFrame>
             <div className="flex-1 flex flex-col gap-10 justify-center items-center text-center">
               <span
                 className="font-orbitron text-3xl tracking-[0.4em]"
@@ -86,7 +88,8 @@ export default function MockupPresentation({ chapter }: Props) {
                 </ul>
               </div>
             </div>
-          </SlideFrame>
+            </SlideFrame>
+          </SlideStage>
         </motion.div>
       </main>
     </div>

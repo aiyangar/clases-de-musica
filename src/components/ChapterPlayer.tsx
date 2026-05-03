@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Background from './Background';
 import Navigation from './Navigation';
 import SlideFrame from './SlideFrame';
+import SlideStage from './SlideStage';
 import { useKeyboardNav } from '@/hooks/useKeyboardNav';
 
 type Props = {
@@ -45,11 +46,13 @@ export default function ChapterPlayer({ slides, onExit }: Props) {
             animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
             exit={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
             transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-            className="w-full flex items-center justify-center"
+            className="w-full h-full flex items-center justify-center"
           >
-            <SlideFrame>
-              <Current />
-            </SlideFrame>
+            <SlideStage>
+              <SlideFrame>
+                <Current />
+              </SlideFrame>
+            </SlideStage>
           </motion.div>
         </AnimatePresence>
       </main>
