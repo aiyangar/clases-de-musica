@@ -11,7 +11,6 @@ export default function SlideRelacionClaves() {
           <Pentagrama
             clef="sol"
             notes={[{ step: -2, label: 'Do central', highlight: true }]}
-            ledgerLinesBelow={1}
             width={720}
           />
         </div>
@@ -19,7 +18,6 @@ export default function SlideRelacionClaves() {
           <Pentagrama
             clef="fa"
             notes={[{ step: 10, label: 'Do central', highlight: true }]}
-            ledgerLinesAbove={1}
             width={720}
           />
         </div>

@@ -1,12 +1,9 @@
 import type { ClefKind, StaffNote, FigureKind } from './types';
-import NoteSymbol from './NoteSymbol';
 import ClefSymbol from './ClefSymbol';
 
 type Props = {
   clef?: ClefKind;
   notes?: StaffNote[];
-  ledgerLinesAbove?: number;
-  ledgerLinesBelow?: number;
   showLineNumbers?: boolean;
   showSpaceNumbers?: boolean;
   highlightLines?: number[];
@@ -26,6 +23,23 @@ const STAFF_X_END = VB_WIDTH - 40;
 const CLEF_WIDTH = 70;
 const NOTE_AREA_X_START = 160;
 const NOTE_AREA_X_END = STAFF_X_END - 30;
+const LEDGER_HALF_WIDTH = 22;
+const NOTE_FONT_SIZE = 75;
+const NOTEHEAD_BASELINE_OFFSET = 26;
+const NOTEHEAD_HALF_HEIGHT = 26;
+const MUSIC_FONT_STACK =
+  '"Noto Music", "Apple Symbols", "Segoe UI Symbol", serif';
+
+const NOTE_GLYPHS: Record<FigureKind, string> = {
+  redonda: '\u{1D15D}',
+  blanca: '\u{1D15E}',
+  negra: '\u{1D15F}',
+  corchea: '\u{1D160}',
+  semicorchea: '\u{1D161}',
+  fusa: '\u{1D162}',
+  semifusa: '\u{1D163}',
+  garrapatea: '\u{1D164}',
+};
 
 /**
  * Convert staff step → y coordinate.
@@ -35,11 +49,39 @@ function stepToY(step: number): number {
   return STAFF_BOTTOM - step * (LINE_GAP / 2);
 }
 
+function noteX(idx: number, count: number): number {
+  if (count === 1) return (NOTE_AREA_X_START + NOTE_AREA_X_END) / 2;
+  return (
+    NOTE_AREA_X_START +
+    (idx * (NOTE_AREA_X_END - NOTE_AREA_X_START)) / (count - 1)
+  );
+}
+
+function ledgerStepsFor(noteStep: number): number[] {
+  const steps: number[] = [];
+  if (noteStep > 8) {
+    for (let s = 10; s <= noteStep; s += 2) steps.push(s);
+  } else if (noteStep < 0) {
+    for (let s = -2; s >= noteStep; s -= 2) steps.push(s);
+  }
+  return steps;
+}
+
+function shouldFlipFor(step: number, figure: FigureKind): boolean {
+  return figure !== 'redonda' && step > 4;
+}
+
+function labelYFor(step: number): number {
+  if (step > 8) return stepToY(step) - NOTEHEAD_HALF_HEIGHT - 14;
+  if (step < 0) {
+    return Math.max(stepToY(step) + NOTEHEAD_HALF_HEIGHT + 24, STAFF_BOTTOM + 50);
+  }
+  return STAFF_BOTTOM + 50;
+}
+
 export default function Pentagrama({
   clef,
   notes = [],
-  ledgerLinesAbove = 0,
-  ledgerLinesBelow = 0,
   showLineNumbers = false,
   showSpaceNumbers = false,
   highlightLines = [],
@@ -99,31 +141,21 @@ export default function Pentagrama({
         />
       ))}
 
-      {Array.from({ length: ledgerLinesAbove }).map((_, i) => (
-        <line
-          key={`la-${i}`}
-          x1={STAFF_X_START + 80}
-          y1={STAFF_TOP - (i + 1) * LINE_GAP}
-          x2={STAFF_X_END - 80}
-          y2={STAFF_TOP - (i + 1) * LINE_GAP}
-          stroke="currentColor"
-          strokeWidth={2}
-          opacity={0.7}
-        />
-      ))}
-
-      {Array.from({ length: ledgerLinesBelow }).map((_, i) => (
-        <line
-          key={`lb-${i}`}
-          x1={STAFF_X_START + 80}
-          y1={STAFF_BOTTOM + (i + 1) * LINE_GAP}
-          x2={STAFF_X_END - 80}
-          y2={STAFF_BOTTOM + (i + 1) * LINE_GAP}
-          stroke="currentColor"
-          strokeWidth={2}
-          opacity={0.7}
-        />
-      ))}
+      {notes.flatMap((note, idx) => {
+        const x = noteX(idx, notes.length);
+        return ledgerStepsFor(note.step).map((s) => (
+          <line
+            key={`ledger-${idx}-${s}`}
+            x1={x - LEDGER_HALF_WIDTH}
+            y1={stepToY(s)}
+            x2={x + LEDGER_HALF_WIDTH}
+            y2={stepToY(s)}
+            stroke="currentColor"
+            strokeWidth={2}
+            opacity={0.7}
+          />
+        ));
+      })}
 
       {showLineNumbers &&
         staffLines.map(({ n, y }) => (
@@ -183,35 +215,31 @@ export default function Pentagrama({
 
       {notes.map((note, idx) => {
         const y = stepToY(note.step);
-        const x =
-          notes.length === 1
-            ? (NOTE_AREA_X_START + NOTE_AREA_X_END) / 2
-            : NOTE_AREA_X_START +
-              (idx * (NOTE_AREA_X_END - NOTE_AREA_X_START)) / (notes.length - 1);
+        const x = noteX(idx, notes.length);
 
         const figure: FigureKind = note.figure ?? 'negra';
         const noteColor =
           note.color ?? (note.highlight ? '#ffff00' : '#00ffff');
+        const flip = shouldFlipFor(note.step, figure);
 
         return (
           <g key={`note-${idx}`}>
-            <foreignObject x={x - 30} y={y - 50} width={60} height={80}>
-              <div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  justifyContent: 'center',
-                }}
-              >
-                <NoteSymbol kind={figure} color={noteColor} size={64} />
-              </div>
-            </foreignObject>
+            <text
+              x={x}
+              y={y + NOTEHEAD_BASELINE_OFFSET}
+              fontSize={NOTE_FONT_SIZE}
+              fontFamily={MUSIC_FONT_STACK}
+              fill={noteColor}
+              textAnchor="middle"
+              transform={flip ? `rotate(180 ${x} ${y})` : undefined}
+              style={{ filter: `drop-shadow(0 0 6px ${noteColor})` }}
+            >
+              {NOTE_GLYPHS[figure]}
+            </text>
             {note.label && (
               <text
                 x={x}
-                y={STAFF_BOTTOM + 50}
+                y={labelYFor(note.step)}
                 fontSize="22"
                 fontFamily="Orbitron, sans-serif"
                 fontWeight={800}
