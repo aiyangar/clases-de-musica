@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 200" fill="currentColor">
-  <ellipse cx="30" cy="175" rx="12" ry="8.5" transform="rotate(-18 30 175)"/>
-  <line x1="40.5" y1="170" x2="40.5" y2="80" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M 40.5,80 C 55,82 58,90 52,100 C 52,94 47,89 40.5,90 Z"/>
-  <path d="M 40.5,94 C 55,96 58,104 52,114 C 52,108 47,103 40.5,104 Z"/>
-  <path d="M 40.5,108 C 55,110 58,118 52,128 C 52,122 47,117 40.5,118 Z"/>
-  <path d="M 40.5,122 C 55,124 58,132 52,142 C 52,136 47,131 40.5,132 Z"/>
-  <path d="M 40.5,136 C 55,138 58,146 52,156 C 52,150 47,145 40.5,146 Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100" fill="currentColor">
+  <ellipse cx="30" cy="85" rx="12" ry="8.5" fill="currentColor" stroke="currentColor" stroke-width="3" transform="rotate(-18 30 85)"/>
+  <line x1="42" y1="8" x2="42" y2="84" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 42,8 C 55,9 58,13 52,18 C 52,15 47,12.5 42,13 Z"/>
+  <path d="M 42,15 C 55,16 58,20 52,25 C 52,22 47,19.5 42,20 Z"/>
+  <path d="M 42,22 C 55,23 58,27 52,32 C 52,29 47,26.5 42,27 Z"/>
+  <path d="M 42,29 C 55,30 58,34 52,39 C 52,36 47,33.5 42,34 Z"/>
+  <path d="M 42,36 C 55,37 58,41 52,46 C 52,43 47,40.5 42,41 Z"/>
 </svg>

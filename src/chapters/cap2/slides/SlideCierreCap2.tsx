@@ -20,8 +20,7 @@ export default function SlideCierreCap2() {
       </div>
 
       <p className="subtitle max-w-[1300px]">
-        En el siguiente capítulo: <em>Acordes y progresiones</em>, la geometría
-        del sentimiento.
+        En el siguiente capítulo: <em>Signos musicales</em>, el código del pentagrama.
       </p>
     </div>
   );

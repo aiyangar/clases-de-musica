@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 200" fill="currentColor">
-  <ellipse cx="30" cy="175" rx="12" ry="8.5" transform="rotate(-18 30 175)"/>
-  <line x1="40.5" y1="170" x2="40.5" y2="80" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M 40.5,80 C 55,84 58,94 52,106 C 52,98 47,91 40.5,93 Z"/>
-  <path d="M 40.5,98 C 55,102 58,112 52,124 C 52,116 47,109 40.5,111 Z"/>
-  <path d="M 40.5,116 C 55,120 58,130 52,142 C 52,134 47,127 40.5,129 Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100" fill="currentColor">
+  <ellipse cx="30" cy="85" rx="12" ry="8.5" fill="currentColor" stroke="currentColor" stroke-width="3" transform="rotate(-18 30 85)"/>
+  <line x1="42" y1="8" x2="42" y2="84" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 42,8 C 55,10 58,15 52,21 C 52,17 47,13.5 42,14.5 Z"/>
+  <path d="M 42,17 C 55,19 58,24 52,30 C 52,26 47,22.5 42,23.5 Z"/>
+  <path d="M 42,26 C 55,28 58,33 52,39 C 52,35 47,31.5 42,32.5 Z"/>
 </svg>
