@@ -12,9 +12,9 @@ export default function SlideCompas() {
       </p>
       <div className="flex-1 grid grid-cols-3 gap-8 items-center w-full max-w-5xl">
         {[
-          { num: 4, den: 4, color: '#00ffff', label: 'cuatro tiempos · negra = 1 tiempo' },
-          { num: 3, den: 4, color: '#ff00ff', label: 'tres tiempos · negra = 1 tiempo' },
-          { num: 6, den: 8, color: '#ffff00', label: 'seis tiempos · corchea = 1 tiempo' },
+          { num: 4, den: 4, color: '#00ffff', label: 'cuatro tiempos · negra = 1 compás' },
+          { num: 3, den: 4, color: '#ff00ff', label: 'tres tiempos · negra = 1 compás' },
+          { num: 6, den: 8, color: '#ffff00', label: 'seis tiempos · corchea = 1 compás' },
         ].map((c) => (
           <div key={`${c.num}-${c.den}`} className="timbre-card flex flex-col items-center justify-center gap-3">
             <TimeSignature numerator={c.num} denominator={c.den} size={80} color={c.color} />
