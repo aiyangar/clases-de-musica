@@ -39,22 +39,22 @@ export default function ChapterPlayer({ slides, onExit }: Props) {
       <Background />
 
       <main className="relative z-10 h-full w-full flex items-center justify-center pt-20 pb-32">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={index}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
-            className="w-full h-full flex items-center justify-center"
-          >
-            <SlideStage>
+        <SlideStage>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              className="w-full h-full flex items-center justify-center"
+            >
               <SlideFrame>
                 <Current />
               </SlideFrame>
-            </SlideStage>
-          </motion.div>
-        </AnimatePresence>
+            </motion.div>
+          </AnimatePresence>
+        </SlideStage>
       </main>
 
       <Navigation current={index} total={total} onPrev={prev} onNext={next} />

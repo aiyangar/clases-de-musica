@@ -1,3 +1,20 @@
+import type { CSSProperties } from 'react';
+import redondaSvg from '@/assets/music/sounds/redonda.svg';
+import blancaUpSvg from '@/assets/music/sounds/blanca.svg';
+import blancaDownSvg from '@/assets/music/sounds/blanca-down.svg';
+import negraUpSvg from '@/assets/music/sounds/negra.svg';
+import negraDownSvg from '@/assets/music/sounds/negra-down.svg';
+import corcheaUpSvg from '@/assets/music/sounds/corchea.svg';
+import corcheaDownSvg from '@/assets/music/sounds/corchea-down.svg';
+import semicorcheaUpSvg from '@/assets/music/sounds/semicorchea.svg';
+import semicorcheaDownSvg from '@/assets/music/sounds/semicorchea-down.svg';
+import fusaUpSvg from '@/assets/music/sounds/fusa.svg';
+import fusaDownSvg from '@/assets/music/sounds/fusa-down.svg';
+import semifusaUpSvg from '@/assets/music/sounds/semifusa.svg';
+import semifusaDownSvg from '@/assets/music/sounds/semifusa-down.svg';
+import garrapateaUpSvg from '@/assets/music/sounds/garrapatea.svg';
+import garrapateaDownSvg from '@/assets/music/sounds/garrapatea-down.svg';
+
 export type FigureKind =
   | 'redonda'
   | 'blanca'
@@ -8,16 +25,18 @@ export type FigureKind =
   | 'semifusa'
   | 'garrapatea';
 
-const NOTE_GLYPH: Record<FigureKind, string> = {
-  redonda: '\u{1D15D}',
-  blanca: '\u{1D15E}',
-  negra: '\u{1D15F}',
-  corchea: '\u{1D160}',
-  semicorchea: '\u{1D161}',
-  fusa: '\u{1D162}',
-  semifusa: '\u{1D163}',
-  garrapatea: '\u{1D164}',
+const NOTE_SVG: Record<FigureKind, { up: string; down: string }> = {
+  redonda: { up: redondaSvg, down: redondaSvg },
+  blanca: { up: blancaUpSvg, down: blancaDownSvg },
+  negra: { up: negraUpSvg, down: negraDownSvg },
+  corchea: { up: corcheaUpSvg, down: corcheaDownSvg },
+  semicorchea: { up: semicorcheaUpSvg, down: semicorcheaDownSvg },
+  fusa: { up: fusaUpSvg, down: fusaDownSvg },
+  semifusa: { up: semifusaUpSvg, down: semifusaDownSvg },
+  garrapatea: { up: garrapateaUpSvg, down: garrapateaDownSvg },
 };
+
+const NOTE_ASPECT = 0.6;
 
 type Props = {
   kind: FigureKind;
@@ -34,23 +53,39 @@ export default function NoteSymbol({
   size = 80,
   className,
 }: Props) {
-  const fontSize = typeof size === 'number' ? `${size}px` : size;
+  const heightStr = typeof size === 'number' ? `${size}px` : size;
+  const widthStr =
+    typeof size === 'number'
+      ? `${size * NOTE_ASPECT}px`
+      : `calc(${size} * ${NOTE_ASPECT})`;
+  const url = NOTE_SVG[kind][direction];
+
+  const wrapperStyle: CSSProperties & {
+    '--svg-url'?: string;
+    '--svg-color'?: string;
+  } = {
+    width: widthStr,
+    height: heightStr,
+    '--svg-url': `url("${url}")`,
+    '--svg-color': color,
+  };
+
+  const shapeStyle: CSSProperties = {
+    width: '100%',
+    height: '100%',
+    display: 'block',
+    backgroundColor: color,
+    filter: `drop-shadow(0 0 4px ${color}) drop-shadow(0 0 12px ${color})`,
+  };
 
   return (
     <span
-      className={`font-music inline-flex items-center justify-center select-none ${className ?? ''}`}
-      style={{
-        fontSize,
-        lineHeight: 1,
-        color,
-        textShadow: `0 0 14px ${color}, 0 0 28px ${color}88`,
-        transform: direction === 'down' ? 'rotate(180deg)' : undefined,
-        minWidth: '0.7em',
-        minHeight: '1.5em',
-      }}
+      role="img"
       aria-label={`Figura musical ${kind}${direction === 'down' ? ' con plica abajo' : ''}`}
+      className={`music-svg-glow select-none ${className ?? ''}`}
+      style={wrapperStyle}
     >
-      {NOTE_GLYPH[kind]}
+      <span className="music-svg-mask" style={shapeStyle} />
     </span>
   );
 }
