@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100" fill="currentColor">
+  <ellipse cx="30" cy="85" rx="12" ry="8.5" fill="currentColor" stroke="currentColor" stroke-width="3" transform="rotate(-18 30 85)"/>
+  <line x1="42" y1="8" x2="42" y2="84" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 42,8 C 55,9.5 58,14 52,19.5 C 52,16 47,13 42,13.5 Z"/>
+  <path d="M 42,16 C 55,17.5 58,22 52,27.5 C 52,24 47,21 42,21.5 Z"/>
+  <path d="M 42,24 C 55,25.5 58,30 52,35.5 C 52,32 47,29 42,29.5 Z"/>
+  <path d="M 42,32 C 55,33.5 58,38 52,43.5 C 52,40 47,37 42,37.5 Z"/>
+</svg>

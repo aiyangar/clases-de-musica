@@ -1,7 +1,25 @@
+import { useMemo } from 'react';
 import type { ClefKind, StaffNote, FigureKind } from './types';
+
+import redondaSvg from '@/assets/music/sounds/redonda.svg';
+import blancaUpSvg from '@/assets/music/sounds/blanca.svg';
+import blancaDownSvg from '@/assets/music/sounds/blanca-down.svg';
+import negraUpSvg from '@/assets/music/sounds/negra.svg';
+import negraDownSvg from '@/assets/music/sounds/negra-down.svg';
+import corcheaUpSvg from '@/assets/music/sounds/corchea.svg';
+import corcheaDownSvg from '@/assets/music/sounds/corchea-down.svg';
+import semicorcheaUpSvg from '@/assets/music/sounds/semicorchea.svg';
+import semicorcheaDownSvg from '@/assets/music/sounds/semicorchea-down.svg';
+import fusaUpSvg from '@/assets/music/sounds/fusa.svg';
+import fusaDownSvg from '@/assets/music/sounds/fusa-down.svg';
+import semifusaUpSvg from '@/assets/music/sounds/semifusa.svg';
+import semifusaDownSvg from '@/assets/music/sounds/semifusa-down.svg';
+import garrapateaUpSvg from '@/assets/music/sounds/garrapatea.svg';
+import garrapateaDownSvg from '@/assets/music/sounds/garrapatea-down.svg';
 
 type Props = {
   clef?: ClefKind;
+  clefLine?: number;
   notes?: StaffNote[];
   showLineNumbers?: boolean;
   showSpaceNumbers?: boolean;
@@ -23,21 +41,25 @@ const CLEF_WIDTH = 70;
 const NOTE_AREA_X_START = 160;
 const NOTE_AREA_X_END = STAFF_X_END - 30;
 const LEDGER_HALF_WIDTH = 22;
-const NOTE_FONT_SIZE = 75;
-const NOTEHEAD_BASELINE_OFFSET = 26;
 const NOTEHEAD_HALF_HEIGHT = 26;
 const MUSIC_FONT_STACK =
   '"Noto Music", "Apple Symbols", "Segoe UI Symbol", serif';
 
-const NOTE_GLYPHS: Record<FigureKind, string> = {
-  redonda: '\u{1D15D}',
-  blanca: '\u{1D15E}',
-  negra: '\u{1D15F}',
-  corchea: '\u{1D160}',
-  semicorchea: '\u{1D161}',
-  fusa: '\u{1D162}',
-  semifusa: '\u{1D163}',
-  garrapatea: '\u{1D164}',
+const NOTE_DISPLAY_HEIGHT = 95;
+const NOTE_DISPLAY_WIDTH = NOTE_DISPLAY_HEIGHT * 0.6;
+const NOTE_HEAD_X = NOTE_DISPLAY_WIDTH / 2;
+const NOTE_HEAD_Y_UP = 0.85 * NOTE_DISPLAY_HEIGHT;
+const NOTE_HEAD_Y_DOWN = 0.15 * NOTE_DISPLAY_HEIGHT;
+
+const NOTE_SVG: Record<FigureKind, { up: string; down: string }> = {
+  redonda: { up: redondaSvg, down: redondaSvg },
+  blanca: { up: blancaUpSvg, down: blancaDownSvg },
+  negra: { up: negraUpSvg, down: negraDownSvg },
+  corchea: { up: corcheaUpSvg, down: corcheaDownSvg },
+  semicorchea: { up: semicorcheaUpSvg, down: semicorcheaDownSvg },
+  fusa: { up: fusaUpSvg, down: fusaDownSvg },
+  semifusa: { up: semifusaUpSvg, down: semifusaDownSvg },
+  garrapatea: { up: garrapateaUpSvg, down: garrapateaDownSvg },
 };
 
 const CLEF_GLYPHS: Record<ClefKind, string> = {
@@ -51,15 +73,16 @@ const CLEF_X = STAFF_X_START + 8 + CLEF_WIDTH / 2;
 const CLEF_BASELINE_Y: Record<ClefKind, number> = {
   sol: 213,
   fa: 175,
-  do: 195,
+  do: 220,
+};
+const CLEF_DEFAULT_LINE: Record<ClefKind, number> = {
+  sol: 2,
+  fa: 4,
+  do: 3,
 };
 const NOTE_LABEL_FONT_SIZE = 28;
 const NOTE_LABEL_OFFSET_BELOW_STAFF = 38;
 
-/**
- * Convert staff step → y coordinate.
- * step 0 = bottom line (y = STAFF_BOTTOM); each step up subtracts LINE_GAP / 2.
- */
 function stepToY(step: number): number {
   return STAFF_BOTTOM - step * (LINE_GAP / 2);
 }
@@ -97,8 +120,13 @@ function labelYFor(step: number): number {
   return STAFF_BOTTOM + NOTE_LABEL_OFFSET_BELOW_STAFF;
 }
 
+function colorFilterId(color: string): string {
+  return `note-tint-${color.replace('#', '').toLowerCase()}`;
+}
+
 export default function Pentagrama({
   clef,
+  clefLine,
   notes = [],
   showLineNumbers = false,
   showSpaceNumbers = false,
@@ -121,6 +149,15 @@ export default function Pentagrama({
   const resolvedHeight =
     height ?? (typeof width === 'number' ? (width * VB_HEIGHT) / VB_WIDTH : undefined);
 
+  const uniqueNoteColors = useMemo(() => {
+    const set = new Set<string>();
+    for (const note of notes) {
+      const c = note.color ?? (note.highlight ? '#ffff00' : '#00ffff');
+      set.add(c);
+    }
+    return Array.from(set);
+  }, [notes]);
+
   return (
     <svg
       className={className}
@@ -129,6 +166,27 @@ export default function Pentagrama({
       role="img"
       aria-label="Pentagrama"
     >
+      <defs>
+        {uniqueNoteColors.map((c) => (
+          <filter
+            key={c}
+            id={colorFilterId(c)}
+            x="-30%"
+            y="-30%"
+            width="160%"
+            height="160%"
+          >
+            <feFlood floodColor={c} result="flood" />
+            <feComposite in="flood" in2="SourceGraphic" operator="in" result="tinted" />
+            <feGaussianBlur in="tinted" stdDeviation="2.5" result="glow" />
+            <feMerge>
+              <feMergeNode in="glow" />
+              <feMergeNode in="tinted" />
+            </feMerge>
+          </filter>
+        ))}
+      </defs>
+
       {staffSpaces
         .filter((s) => highlightSpaces.includes(s.n))
         .map((s) => (
@@ -212,7 +270,11 @@ export default function Pentagrama({
       {clef && (
         <text
           x={CLEF_X}
-          y={CLEF_BASELINE_Y[clef]}
+          y={
+            CLEF_BASELINE_Y[clef] -
+            ((clefLine ?? CLEF_DEFAULT_LINE[clef]) - CLEF_DEFAULT_LINE[clef]) *
+              LINE_GAP
+          }
           fontSize={CLEF_FONT_SIZE}
           fontFamily={MUSIC_FONT_STACK}
           fill="currentColor"
@@ -230,22 +292,22 @@ export default function Pentagrama({
         const figure: FigureKind = note.figure ?? 'negra';
         const noteColor =
           note.color ?? (note.highlight ? '#ffff00' : '#00ffff');
-        const flip = shouldFlipFor(note.step, figure);
+        const direction: 'up' | 'down' = shouldFlipFor(note.step, figure)
+          ? 'down'
+          : 'up';
+        const headY = direction === 'up' ? NOTE_HEAD_Y_UP : NOTE_HEAD_Y_DOWN;
+        const url = NOTE_SVG[figure][direction];
 
         return (
           <g key={`note-${idx}`}>
-            <text
-              x={x}
-              y={y + NOTEHEAD_BASELINE_OFFSET}
-              fontSize={NOTE_FONT_SIZE}
-              fontFamily={MUSIC_FONT_STACK}
-              fill={noteColor}
-              textAnchor="middle"
-              transform={flip ? `rotate(180 ${x} ${y})` : undefined}
-              style={{ filter: `drop-shadow(0 0 6px ${noteColor})` }}
-            >
-              {NOTE_GLYPHS[figure]}
-            </text>
+            <image
+              href={url}
+              x={x - NOTE_HEAD_X}
+              y={y - headY}
+              width={NOTE_DISPLAY_WIDTH}
+              height={NOTE_DISPLAY_HEIGHT}
+              filter={`url(#${colorFilterId(noteColor)})`}
+            />
             {note.label && (
               <text
                 x={x}
