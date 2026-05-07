@@ -4,6 +4,7 @@ import MockupPresentation from '@/components/MockupPresentation';
 import BackToDashboardButton from '@/components/BackToDashboardButton';
 import { CHAPTERS, findChapter } from '@/chapters/registry';
 import type { ChapterMeta } from '@/chapters/registry';
+import { useOrientationLock } from '@/hooks/useOrientationLock';
 
 type View = { kind: 'dashboard' } | { kind: 'chapter'; id: string };
 
@@ -20,6 +21,7 @@ function readView(): View {
 
 export default function App() {
   const [view, setView] = useState<View>(() => readView());
+  const lock = useOrientationLock();
 
   useEffect(() => {
     const onHash = () => setView(readView());
@@ -28,12 +30,14 @@ export default function App() {
   }, []);
 
   const goChapter = useCallback((id: string) => {
+    void lock.requestLandscape({ withFullscreen: true });
     window.location.hash = `#/${id}`;
-  }, []);
+  }, [lock]);
 
   const goDashboard = useCallback(() => {
+    lock.release();
     window.location.hash = HOME;
-  }, []);
+  }, [lock]);
 
   if (view.kind === 'dashboard') {
     return <Dashboard onSelect={goChapter} />;
