@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, type ReactNode } from 'react';
+import { useViewportOrientation } from '@/hooks/useViewportOrientation';
 
 export const STAGE_WIDTH = 1180;
 export const STAGE_HEIGHT = 820;
@@ -8,16 +9,36 @@ export type SlideStageProps = {
   width?: number;
   height?: number;
   className?: string;
+  rotateOnPortrait?: boolean;
 };
+
+type StageTransform = { scale: number; rotated: boolean };
+
+function computeStageTransform(
+  rect: { width: number; height: number },
+  stage: { width: number; height: number },
+  shouldRotate: boolean,
+): StageTransform {
+  if (shouldRotate) {
+    const k = Math.min(rect.height / stage.width, rect.width / stage.height);
+    return { scale: k, rotated: true };
+  }
+  return {
+    scale: Math.min(rect.width / stage.width, rect.height / stage.height),
+    rotated: false,
+  };
+}
 
 export default function SlideStage({
   children,
   width = STAGE_WIDTH,
   height = STAGE_HEIGHT,
   className,
+  rotateOnPortrait = true,
 }: SlideStageProps) {
   const outerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
+  const { orientation, isTouchDevice } = useViewportOrientation();
 
   useLayoutEffect(() => {
     const outer = outerRef.current;
@@ -27,8 +48,14 @@ export default function SlideStage({
     const recompute = () => {
       const rect = outer.getBoundingClientRect();
       if (rect.width === 0 || rect.height === 0) return;
-      const k = Math.min(rect.width / width, rect.height / height);
-      inner.style.setProperty('--stage-scale', String(k));
+      const shouldRotate = rotateOnPortrait && orientation === 'portrait' && isTouchDevice;
+      const { scale, rotated } = computeStageTransform(
+        { width: rect.width, height: rect.height },
+        { width, height },
+        shouldRotate,
+      );
+      inner.style.setProperty('--stage-scale', String(scale));
+      inner.style.setProperty('--stage-rotate', rotated ? '-90deg' : '0deg');
     };
 
     recompute();
@@ -41,7 +68,7 @@ export default function SlideStage({
       observer.disconnect();
       window.removeEventListener('resize', recompute);
     };
-  }, [width, height]);
+  }, [width, height, orientation, isTouchDevice, rotateOnPortrait]);
 
   return (
     <div
@@ -57,7 +84,7 @@ export default function SlideStage({
           height,
           flex: '0 0 auto',
           transformOrigin: 'center center',
-          transform: 'scale(var(--stage-scale, 1))',
+          transform: 'rotate(var(--stage-rotate, 0deg)) scale(var(--stage-scale, 1))',
         }}
       >
         {children}
