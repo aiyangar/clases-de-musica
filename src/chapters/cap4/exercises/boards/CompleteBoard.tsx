@@ -50,7 +50,11 @@ export default function CompleteBoard({
     }
   }
 
-  let cursorX = TIME_SIG_W;
+  const measureStarts = exercise.measures.map((_, idx) => {
+    let acc = TIME_SIG_W;
+    for (let i = 0; i < idx; i++) acc += measureWidths[i];
+    return acc;
+  });
 
   return (
     <div className="w-full overflow-x-auto">
@@ -85,9 +89,8 @@ export default function CompleteBoard({
         </foreignObject>
 
         {exercise.measures.map((measure, mIdx) => {
-          const startX = cursorX;
+          const startX = measureStarts[mIdx];
           const w = measureWidths[mIdx];
-          cursorX += w;
 
           const renderSlot = (slot: CompleteSlot, sIdx: number) => {
             const slotX = startX + MEASURE_PAD + sIdx * SLOT_WIDTH;
