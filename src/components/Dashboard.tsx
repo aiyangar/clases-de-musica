@@ -8,6 +8,7 @@ const ACCENT_HEX: Record<ChapterMeta['accent'], string> = {
   cyan: '#00ffff',
   magenta: '#ff00ff',
   electric: '#ffff00',
+  orange: '#ff9933',
 };
 
 const PAGE_SIZE = 3;

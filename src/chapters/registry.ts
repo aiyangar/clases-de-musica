@@ -17,7 +17,7 @@ export type ChapterMeta = {
   description: string;
   topics: string[];
   status: ChapterStatus;
-  accent: 'cyan' | 'magenta' | 'electric';
+  accent: 'cyan' | 'magenta' | 'electric' | 'orange';
   presentation?: ComponentType<ChapterPresentationProps>;
 };
 
