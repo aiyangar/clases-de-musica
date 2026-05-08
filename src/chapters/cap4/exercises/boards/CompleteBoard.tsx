@@ -1,0 +1,196 @@
+import type {
+  CompleteExercise,
+  FigureItem,
+  CompleteSlot,
+} from '@/chapters/cap4/types';
+import TimeSignature from '@/components/music/TimeSignature';
+import NoteSymbol from '@/components/music/NoteSymbol';
+import RestSymbol from '@/components/music/RestSymbol';
+import type { PaletteSelection } from '../Palette';
+
+const ORANGE = '#ff9933';
+const STAFF_HEIGHT = 160;
+const SLOT_WIDTH = 56;
+const MEASURE_PAD = 10;
+const TIME_SIG_W = 90;
+
+type Props = {
+  exercise: CompleteExercise;
+  filled: Map<string, FigureItem>;
+  selectedPaletteItem: PaletteSelection | null;
+  onFillBlank: (key: string) => void;
+  onClearBlank: (key: string) => void;
+};
+
+export default function CompleteBoard({
+  exercise,
+  filled,
+  selectedPaletteItem,
+  onFillBlank,
+  onClearBlank,
+}: Props) {
+  const measureWidths = exercise.measures.map(
+    (m) => m.slots.length * SLOT_WIDTH + MEASURE_PAD * 2,
+  );
+  const totalStaffWidth = measureWidths.reduce((a, b) => a + b, 0);
+  const totalWidth = TIME_SIG_W + totalStaffWidth + 30;
+  const lineY = (i: number) => 30 + i * 22;
+
+  function handleBlankClick(measureIdx: number, slotIdx: number) {
+    const key = `${measureIdx}:${slotIdx}`;
+    if (filled.has(key)) {
+      onClearBlank(key);
+      return;
+    }
+    if (
+      selectedPaletteItem &&
+      (selectedPaletteItem.kind === 'figure' || selectedPaletteItem.kind === 'rest')
+    ) {
+      onFillBlank(key);
+    }
+  }
+
+  let cursorX = TIME_SIG_W;
+
+  return (
+    <div className="w-full overflow-x-auto">
+      <svg
+        viewBox={`0 0 ${totalWidth} ${STAFF_HEIGHT}`}
+        style={{ width: '100%', height: STAFF_HEIGHT }}
+        role="img"
+        aria-label={`Completar compases en ${exercise.timeSig}`}
+      >
+        {[0, 1, 2, 3, 4].map((i) => (
+          <line
+            key={i}
+            x1={TIME_SIG_W}
+            x2={totalWidth - 20}
+            y1={lineY(i)}
+            y2={lineY(i)}
+            stroke={ORANGE}
+            strokeOpacity={0.6}
+            strokeWidth={2}
+          />
+        ))}
+
+        <foreignObject x={20} y={30} width={70} height={88}>
+          <div className="flex h-full items-center justify-center">
+            <TimeSignature
+              numerator={parseInt(exercise.timeSig.split('/')[0], 10)}
+              denominator={parseInt(exercise.timeSig.split('/')[1], 10)}
+              size={60}
+              color={ORANGE}
+            />
+          </div>
+        </foreignObject>
+
+        {exercise.measures.map((measure, mIdx) => {
+          const startX = cursorX;
+          const w = measureWidths[mIdx];
+          cursorX += w;
+
+          const renderSlot = (slot: CompleteSlot, sIdx: number) => {
+            const slotX = startX + MEASURE_PAD + sIdx * SLOT_WIDTH;
+            const key = `${mIdx}:${sIdx}`;
+
+            if (slot.kind === 'fixed') {
+              return (
+                <foreignObject
+                  key={`f-${mIdx}-${sIdx}`}
+                  x={slotX}
+                  y={5}
+                  width={SLOT_WIDTH}
+                  height={STAFF_HEIGHT - 10}
+                  pointerEvents="none"
+                >
+                  <div className="flex h-full items-center justify-center">
+                    {slot.item.kind === 'figure' ? (
+                      <NoteSymbol kind={slot.item.figure} direction="up" size={56} color={ORANGE} />
+                    ) : (
+                      <RestSymbol kind={slot.item.rest} size={42} color={ORANGE} />
+                    )}
+                  </div>
+                </foreignObject>
+              );
+            }
+
+            const userItem = filled.get(key);
+            return (
+              <g
+                key={`b-${mIdx}-${sIdx}`}
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleBlankClick(mIdx, sIdx)}
+              >
+                <rect
+                  x={slotX + 4}
+                  y={lineY(0) - 24}
+                  width={SLOT_WIDTH - 8}
+                  height={lineY(4) - lineY(0) + 48}
+                  rx={4}
+                  fill={userItem ? 'transparent' : 'rgba(255, 153, 51, 0.08)'}
+                  stroke={'rgba(255, 153, 51, 0.4)'}
+                  strokeDasharray="5 3"
+                  strokeWidth={1.5}
+                />
+                {userItem && (
+                  <foreignObject
+                    x={slotX}
+                    y={5}
+                    width={SLOT_WIDTH}
+                    height={STAFF_HEIGHT - 10}
+                    pointerEvents="none"
+                  >
+                    <div className="flex h-full items-center justify-center">
+                      {userItem.kind === 'figure' ? (
+                        <NoteSymbol
+                          kind={userItem.figure}
+                          direction="up"
+                          size={56}
+                          color={ORANGE}
+                        />
+                      ) : (
+                        <RestSymbol kind={userItem.rest} size={42} color={ORANGE} />
+                      )}
+                    </div>
+                  </foreignObject>
+                )}
+              </g>
+            );
+          };
+
+          return (
+            <g key={`m-${mIdx}`}>
+              {measure.slots.map(renderSlot)}
+              {mIdx < exercise.measures.length - 1 && (
+                <line
+                  x1={startX + w}
+                  x2={startX + w}
+                  y1={lineY(0)}
+                  y2={lineY(4)}
+                  stroke={ORANGE}
+                  strokeWidth={2.5}
+                />
+              )}
+            </g>
+          );
+        })}
+
+        <line
+          x1={totalWidth - 24}
+          x2={totalWidth - 24}
+          y1={lineY(0)}
+          y2={lineY(4)}
+          stroke={ORANGE}
+          strokeWidth={3}
+        />
+        <rect
+          x={totalWidth - 16}
+          y={lineY(0)}
+          width={6}
+          height={lineY(4) - lineY(0)}
+          fill={ORANGE}
+        />
+      </svg>
+    </div>
+  );
+}
