@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import Cap1Presentation from '@/chapters/cap1/Cap1Presentation';
 import Cap2Presentation from '@/chapters/cap2/Cap2Presentation';
 import Cap3Presentation from '@/chapters/cap3/Cap3Presentation';
+import Cap4Presentation from '@/chapters/cap4/Cap4Presentation';
 
 export type ChapterStatus = 'available' | 'mockup';
 
@@ -17,7 +18,7 @@ export type ChapterMeta = {
   description: string;
   topics: string[];
   status: ChapterStatus;
-  accent: 'cyan' | 'magenta' | 'electric';
+  accent: 'cyan' | 'magenta' | 'electric' | 'orange';
   presentation?: ComponentType<ChapterPresentationProps>;
 };
 
@@ -71,6 +72,23 @@ export const CHAPTERS: ChapterMeta[] = [
     status: 'available',
     accent: 'electric',
     presentation: Cap3Presentation,
+  },
+  {
+    id: 'cap-4',
+    number: 'IV',
+    title: 'Construcción de Compases',
+    tagline: 'Códigos del Compás',
+    description:
+      'Práctica activa: colocar barras divisorias, construir compases desde cero y completar compases en 24 ejercicios.',
+    topics: [
+      'Barras divisorias',
+      'Construir compases',
+      'Completar compases',
+      '24 ejercicios interactivos',
+    ],
+    status: 'available',
+    accent: 'orange',
+    presentation: Cap4Presentation,
   },
 ];
 
