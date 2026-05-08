@@ -635,14 +635,14 @@ export const BARS_EXERCISES: BarsExercise[] = [
   {
     id: 'bars-2',
     timeSig: '3/4',
-    items: [N(3), N(4), N(5), B(4), N(3), N(3), N(4), N(5), N(2)],
+    items: [N(3), N(4), N(5), B(4), N(4), N(3), N(4), N(5), B(4), N(4)],
     expectedBarsAfter: [2, 4, 7],
   },
   {
     id: 'bars-3',
     timeSig: '2/4',
-    items: [N(4), N(4), C(4), C(4), N(4), N(4), B(4), N(4), N(4), C(4), C(4), N(4)],
-    expectedBarsAfter: [1, 3, 4, 6, 8, 10],
+    items: [N(4), N(4), B(4), N(4), N(4), C(4), C(4), C(4), C(4), N(4), N(4), B(4)],
+    expectedBarsAfter: [1, 2, 4, 8, 10],
   },
   {
     id: 'bars-4',
@@ -691,7 +691,7 @@ export const BUILD_EXERCISES: BuildExercise[] = [
   {
     id: 'build-5',
     timeSig: '4/4',
-    required: [B(5), C(2), C(3), C(4), C(5), C(6)],
+    required: [N(3), N(5), C(2), C(4), C(6), C(7)],
   },
   {
     id: 'build-6',
