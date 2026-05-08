@@ -44,7 +44,16 @@ export default function SlideEjercicioBarras() {
 
   return (
     <ExerciseShell
-      title="Coloca las barras divisorias"
+      title="Ejercicio · barras"
+      description={
+        <>
+          Coloca las{' '}
+          <em className="text-orange not-italic font-bold" style={{ color: '#ff9933', textShadow: '0 0 10px #ff9933' }}>
+            barras divisorias
+          </em>{' '}
+          en el lugar correcto según el indicador de compás.
+        </>
+      }
       index={index}
       total={BARS_EXERCISES.length}
       status={status}

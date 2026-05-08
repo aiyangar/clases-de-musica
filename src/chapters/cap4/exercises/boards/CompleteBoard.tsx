@@ -77,12 +77,12 @@ export default function CompleteBoard({
           />
         ))}
 
-        <foreignObject x={20} y={30} width={70} height={88}>
+        <foreignObject x={20} y={5} width={80} height={STAFF_HEIGHT - 10}>
           <div className="flex h-full items-center justify-center">
             <TimeSignature
               numerator={parseInt(exercise.timeSig.split('/')[0], 10)}
               denominator={parseInt(exercise.timeSig.split('/')[1], 10)}
-              size={60}
+              size={48}
               color={ORANGE}
             />
           </div>

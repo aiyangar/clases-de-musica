@@ -69,7 +69,16 @@ export default function SlideEjercicioConstruir({ part }: Props) {
 
   return (
     <ExerciseShell
-      title={`Construir compás · parte ${part}/2`}
+      title={`Construir · ${part}/2`}
+      description={
+        <>
+          Coloca las figuras del palette dentro del compás.{' '}
+          <em className="not-italic font-bold" style={{ color: '#ff9933', textShadow: '0 0 10px #ff9933' }}>
+            Cualquier orden
+          </em>{' '}
+          es válido mientras sumen el valor del indicador.
+        </>
+      }
       index={localIndex}
       total={exercises.length}
       status={status}

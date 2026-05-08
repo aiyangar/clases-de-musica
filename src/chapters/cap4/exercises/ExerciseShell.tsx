@@ -8,6 +8,7 @@ type Status = 'editing' | 'correct' | 'incorrect';
 
 type Props = {
   title: string;
+  description: ReactNode;
   index: number;
   total: number;
   status: Status;
@@ -21,6 +22,7 @@ type Props = {
 
 export default function ExerciseShell({
   title,
+  description,
   index,
   total,
   status,
@@ -40,19 +42,17 @@ export default function ExerciseShell({
         ? `0 0 28px ${RED}66`
         : `0 0 18px ${ORANGE}33`;
 
+  const headingText = `${title} · ${index + 1}/${total}`;
+
   return (
-    <div className="flex-1 flex flex-col gap-6">
-      <div className="flex items-center justify-between">
-        <h2 className="heading-2" data-text={title}>
-          <span>{title}</span>
-        </h2>
-        <span
-          className="font-orbitron text-2xl tracking-[0.3em]"
-          style={{ color: ORANGE, textShadow: `0 0 10px ${ORANGE}` }}
-        >
-          {String(index + 1).padStart(2, '0')}/{String(total).padStart(2, '0')}
-        </span>
-      </div>
+    <div className="flex-1 flex flex-col gap-6 justify-center">
+      <h2 className="heading-2 self-start" data-text={headingText}>
+        <span>{headingText}</span>
+      </h2>
+
+      <p className="font-rajdhani text-3xl text-clear/85 max-w-[1700px]">
+        {description}
+      </p>
 
       <div
         className="rounded-2xl p-6 border-2 transition-colors"

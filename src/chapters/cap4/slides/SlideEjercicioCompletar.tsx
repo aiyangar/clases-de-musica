@@ -65,7 +65,16 @@ export default function SlideEjercicioCompletar({ part }: Props) {
 
   return (
     <ExerciseShell
-      title={`Completar el compás · parte ${part}/2`}
+      title={`Completar · ${part}/2`}
+      description={
+        <>
+          Llena los{' '}
+          <em className="not-italic font-bold" style={{ color: '#ff9933', textShadow: '0 0 10px #ff9933' }}>
+            espacios vacíos
+          </em>{' '}
+          con la figura o silencio que completa el valor de cada compás.
+        </>
+      }
       index={localIndex}
       total={exercises.length}
       status={status}
