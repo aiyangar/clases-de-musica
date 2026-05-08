@@ -2,7 +2,7 @@
 
 **Date**: 2026-05-08
 **Status**: Brainstormed and approved by user; pending implementation plan
-**Accent**: yellow
+**Accent**: orange (`#ff9933`)
 **Tagline**: Códigos del Compás
 
 ## Goal
@@ -20,7 +20,7 @@ Pedagogical contract: tap-to-place mechanic, per-exercise validation with retry,
 - Tap-based interaction optimized for iPad landscape
 - Closed-form datasets (every exercise has a deterministic correct answer)
 - Build-time validation of dataset internal consistency
-- Yellow accent + "Códigos del Compás" tagline
+- Orange accent + "Códigos del Compás" tagline
 - Registration in `chapters/registry.ts` as `available`
 
 ### Out of scope
@@ -228,12 +228,14 @@ No async, no network, no loading states.
     'Práctica activa: colocar barras divisorias, construir compases desde cero y completar compases en 24 ejercicios.',
   topics: ['Barras divisorias', 'Construir compases', 'Completar compases'],
   status: 'available',
-  accent: 'yellow',     // new accent variant
+  accent: 'orange',     // new accent variant
   presentation: Cap4Presentation,
 }
 ```
 
-A new `'yellow'` value for `ChapterMeta.accent` is added, with the corresponding tokens wired in the dashboard chapter card styling.
+A new `'orange'` value for `ChapterMeta.accent` is added (mapped to `#ff9933` in `Dashboard.ACCENT_HEX`).
+
+**Level palette** (Principiante = 8 chapters, each with a unique accent): cap-1 cyan, cap-2 magenta, cap-3 electric, cap-4 orange. Caps V–VIII pending color assignment.
 
 ## Open questions for the implementation plan
 
