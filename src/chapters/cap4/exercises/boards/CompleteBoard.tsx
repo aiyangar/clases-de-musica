@@ -22,8 +22,8 @@ const ITEM_CONTAINER_H = STAFF_HEIGHT - 10;
 // Per-rest vertical offset for the foreignObject. Whole and half rests sit on
 // specific staff positions that don't match the centered note container.
 const REST_Y_OVERRIDE: Partial<Record<Cap4Figure, number>> = {
-  redonda: -18, // whole rest hangs from the 4th line from bottom
-  blanca: -5,   // half rest sits on the 3rd line from bottom
+  redonda: -16, // whole rest hangs from the 4th line from bottom
+  blanca: -8,   // half rest sits on the 3rd line from bottom
 };
 
 // Per-rest size override; small rests at REST_SIZE feel undersized, so whole and
