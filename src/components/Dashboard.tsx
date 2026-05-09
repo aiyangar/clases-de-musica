@@ -24,6 +24,10 @@ export default function Dashboard({ onSelect }: Props) {
     () => chaptersByLevel(activeLevel),
     [activeLevel],
   );
+  const levelAccent = useMemo(
+    () => LEVELS.find((l) => l.id === activeLevel)?.accentHex ?? '#00ffff',
+    [activeLevel],
+  );
   const pages = useMemo(
     () => chunk(chaptersInLevel, PAGE_SIZE),
     [chaptersInLevel],
@@ -56,10 +60,16 @@ export default function Dashboard({ onSelect }: Props) {
 
       <main className="relative z-10 h-full w-full flex flex-col items-center justify-center px-6 py-8">
         <header className="text-center mb-8">
-          <span className="font-orbitron text-2xl md:text-3xl tracking-[0.4em] text-cyan text-glow-cyan block mb-4">
+          <span
+            className="font-orbitron text-2xl md:text-3xl tracking-[0.4em] block mb-4"
+            style={{ color: levelAccent, textShadow: `0 0 14px ${levelAccent}` }}
+          >
             ARCHIVO MAESTRO
           </span>
-          <h1 className="heading-1 text-clear text-glow-cyan">
+          <h1
+            className="heading-1 text-clear"
+            style={{ textShadow: `0 0 24px ${levelAccent}` }}
+          >
             Clases de Música
           </h1>
           <p className="tagline mt-4 animate-flicker">Selecciona el capítulo</p>
@@ -72,6 +82,7 @@ export default function Dashboard({ onSelect }: Props) {
               direction="left"
               onClick={() => setPage((p) => Math.max(p - 1, 0))}
               hidden={page === 0}
+              accentHex={levelAccent}
             />
           )}
 
@@ -100,6 +111,7 @@ export default function Dashboard({ onSelect }: Props) {
               direction="right"
               onClick={() => setPage((p) => Math.min(p + 1, totalPages - 1))}
               hidden={page === totalPages - 1}
+              accentHex={levelAccent}
             />
           )}
         </div>
@@ -112,6 +124,7 @@ export default function Dashboard({ onSelect }: Props) {
                 active={i === page}
                 onClick={() => setPage(i)}
                 index={i}
+                accentHex={levelAccent}
               />
             ))}
           </div>
@@ -275,9 +288,10 @@ type PagerArrowProps = {
   direction: 'left' | 'right';
   onClick: () => void;
   hidden: boolean;
+  accentHex: string;
 };
 
-function PagerArrow({ direction, onClick, hidden }: PagerArrowProps) {
+function PagerArrow({ direction, onClick, hidden, accentHex }: PagerArrowProps) {
   const isLeft = direction === 'left';
   return (
     <button
@@ -290,11 +304,11 @@ function PagerArrow({ direction, onClick, hidden }: PagerArrowProps) {
       style={{
         left: isLeft ? '0' : 'auto',
         right: isLeft ? 'auto' : '0',
-        color: '#00ffff',
-        textShadow: '0 0 14px #00ffff',
-        border: '2px solid #00ffff66',
+        color: accentHex,
+        textShadow: `0 0 14px ${accentHex}`,
+        border: `2px solid ${accentHex}66`,
         background: 'rgba(0, 0, 0, 0.35)',
-        boxShadow: '0 0 18px #00ffff33',
+        boxShadow: `0 0 18px ${accentHex}33`,
         backdropFilter: 'blur(6px)',
         opacity: hidden ? 0 : 1,
         pointerEvents: hidden ? 'none' : 'auto',
@@ -309,9 +323,10 @@ type PagerDotProps = {
   active: boolean;
   onClick: () => void;
   index: number;
+  accentHex: string;
 };
 
-function PagerDot({ active, onClick, index }: PagerDotProps) {
+function PagerDot({ active, onClick, index, accentHex }: PagerDotProps) {
   return (
     <button
       type="button"
@@ -323,9 +338,9 @@ function PagerDot({ active, onClick, index }: PagerDotProps) {
       style={{
         width: active ? '28px' : '12px',
         height: '12px',
-        background: active ? '#00ffff' : 'transparent',
-        border: '2px solid #00ffff',
-        boxShadow: active ? '0 0 14px #00ffff' : 'none',
+        background: active ? accentHex : 'transparent',
+        border: `2px solid ${accentHex}`,
+        boxShadow: active ? `0 0 14px ${accentHex}` : 'none',
       }}
     />
   );
