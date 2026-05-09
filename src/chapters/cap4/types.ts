@@ -17,6 +17,7 @@ export type BuildExercise = {
   id: string;
   timeSig: TimeSig;
   required: FigureItem[];
+  distractors?: FigureItem[];
 };
 
 export type CompleteSlot =

@@ -1,9 +1,6 @@
 import { useMemo, useState } from 'react';
 import ExerciseShell from '../exercises/ExerciseShell';
-import Palette, {
-  type PaletteSelection,
-  type PoolEntry,
-} from '../exercises/Palette';
+import Palette, { type PaletteSelection } from '../exercises/Palette';
 import BuildBoard from '../exercises/boards/BuildBoard';
 import { BUILD_EXERCISES } from '../data/build';
 import { validateBuild } from '../exercises/validators';
@@ -12,15 +9,7 @@ import type { FigureItem } from '../types';
 type Status = 'editing' | 'correct' | 'incorrect';
 type Props = { part: 1 | 2 };
 
-function poolKeyOf(item: FigureItem): string {
-  return item.kind === 'figure' ? `fig:${item.figure}` : `rest:${item.rest}`;
-}
-
-function selectionKeyOf(sel: PaletteSelection): string | null {
-  if (sel.kind === 'figure') return `fig:${sel.figure}`;
-  if (sel.kind === 'rest') return `rest:${sel.rest}`;
-  return null;
-}
+type PlacedEntry = { item: FigureItem; poolIndex: number };
 
 export default function SlideEjercicioConstruir({ part }: Props) {
   const sliceStart = part === 1 ? 0 : 5;
@@ -28,68 +17,35 @@ export default function SlideEjercicioConstruir({ part }: Props) {
   const exercises = BUILD_EXERCISES.slice(sliceStart, sliceEnd);
 
   const [localIndex, setLocalIndex] = useState(0);
-  const [paletteSel, setPaletteSel] = useState<PaletteSelection | null>(null);
   const [status, setStatus] = useState<Status>('editing');
-  const [placed, setPlaced] = useState<(FigureItem | null)[]>(
+  const [selectedPoolIndex, setSelectedPoolIndex] = useState<number | null>(null);
+  const [placed, setPlaced] = useState<(PlacedEntry | null)[]>(
     () => Array(exercises[0].required.length).fill(null),
   );
 
   const ex = exercises[localIndex];
 
-  const poolTotals = useMemo(() => {
-    const counts = new Map<string, { selection: PoolEntry['selection']; count: number }>();
-    for (const item of ex.required) {
-      const key = poolKeyOf(item);
-      const sel: PoolEntry['selection'] =
-        item.kind === 'figure'
-          ? { kind: 'figure', figure: item.figure }
-          : { kind: 'rest', rest: item.rest };
-      const entry = counts.get(key);
-      if (entry) entry.count += 1;
-      else counts.set(key, { selection: sel, count: 1 });
-    }
-    return counts;
+  const pool: FigureItem[] = useMemo(() => {
+    return [...ex.required, ...(ex.distractors ?? [])];
   }, [ex]);
 
-  const usage = useMemo(() => {
-    const u = new Map<string, number>();
-    for (const item of placed) {
-      if (!item) continue;
-      const key = poolKeyOf(item);
-      u.set(key, (u.get(key) ?? 0) + 1);
-    }
-    return u;
+  const usedIndices = useMemo(() => {
+    const s = new Set<number>();
+    for (const p of placed) if (p) s.add(p.poolIndex);
+    return s;
   }, [placed]);
 
-  const pool: PoolEntry[] = useMemo(() => {
-    return Array.from(poolTotals.entries()).map(([key, { selection, count }]) => ({
-      selection,
-      total: count,
-      remaining: count - (usage.get(key) ?? 0),
-    }));
-  }, [poolTotals, usage]);
-
-  function selectionToItem(sel: PaletteSelection): FigureItem | null {
-    if (sel.kind === 'figure') return { kind: 'figure', figure: sel.figure, step: 4 };
-    if (sel.kind === 'rest') return { kind: 'rest', rest: sel.rest };
-    return null;
-  }
-
   function placeAt(slotIdx: number) {
-    if (status !== 'editing' || !paletteSel) return;
-    const key = selectionKeyOf(paletteSel);
-    if (!key) return;
-    const total = poolTotals.get(key)?.count ?? 0;
-    const used = usage.get(key) ?? 0;
-    if (used >= total) return;
-
-    const item = selectionToItem(paletteSel);
+    if (status !== 'editing' || selectedPoolIndex === null) return;
+    if (usedIndices.has(selectedPoolIndex)) return;
+    const item = pool[selectedPoolIndex];
     if (!item) return;
     setPlaced((prev) => {
       const next = [...prev];
-      next[slotIdx] = item;
+      next[slotIdx] = { item, poolIndex: selectedPoolIndex };
       return next;
     });
+    setSelectedPoolIndex(null);
   }
 
   function clearAt(slotIdx: number) {
@@ -102,7 +58,9 @@ export default function SlideEjercicioConstruir({ part }: Props) {
   }
 
   function verify() {
-    const filled = placed.filter((x): x is FigureItem => x !== null);
+    const filled = placed
+      .filter((p): p is PlacedEntry => p !== null)
+      .map((p) => p.item);
     setStatus(validateBuild(ex, filled) ? 'correct' : 'incorrect');
   }
 
@@ -115,21 +73,31 @@ export default function SlideEjercicioConstruir({ part }: Props) {
       const nextIdx = localIndex + 1;
       setLocalIndex(nextIdx);
       setPlaced(Array(exercises[nextIdx].required.length).fill(null));
-      setPaletteSel(null);
+      setSelectedPoolIndex(null);
       setStatus('editing');
     }
   }
+
+  // Backwards-compatible Palette selection used by BuildBoard for highlight only.
+  const paletteSel: PaletteSelection | null = useMemo(() => {
+    if (selectedPoolIndex === null) return null;
+    const item = pool[selectedPoolIndex];
+    if (!item) return null;
+    return item.kind === 'figure'
+      ? { kind: 'figure', figure: item.figure }
+      : { kind: 'rest', rest: item.rest };
+  }, [pool, selectedPoolIndex]);
 
   return (
     <ExerciseShell
       title="Ejercicio · construir"
       description={
         <>
-          Coloca las{' '}
+          Coloca{' '}
           <em className="not-italic font-bold" style={{ color: '#ff9933', textShadow: '0 0 10px #ff9933' }}>
             {ex.required.length} figuras
           </em>{' '}
-          del palette dentro del compás. Cualquier orden vale mientras sumen el valor del indicador.
+          dentro del compás. Hay figuras de sobra: usa solo las que sumen el valor del indicador.
         </>
       }
       index={localIndex}
@@ -142,7 +110,7 @@ export default function SlideEjercicioConstruir({ part }: Props) {
       board={
         <BuildBoard
           exercise={ex}
-          placed={placed}
+          placed={placed.map((p) => p?.item ?? null)}
           selectedPaletteItem={paletteSel}
           onPlaceAt={placeAt}
           onClearAt={clearAt}
@@ -151,9 +119,14 @@ export default function SlideEjercicioConstruir({ part }: Props) {
       palette={
         <Palette
           selected={paletteSel}
-          onSelect={setPaletteSel}
+          onSelect={() => {}}
           showFigureTools
-          pool={pool}
+          flatPool={{
+            items: pool,
+            usedIndices,
+            selectedIndex: selectedPoolIndex,
+            onSelectIndex: setSelectedPoolIndex,
+          }}
         />
       }
     />
