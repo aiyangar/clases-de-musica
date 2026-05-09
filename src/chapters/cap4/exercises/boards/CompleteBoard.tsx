@@ -101,7 +101,7 @@ export default function CompleteBoard({
                 <foreignObject
                   key={`f-${mIdx}-${sIdx}`}
                   x={slotX}
-                  y={5}
+                  y={2}
                   width={SLOT_WIDTH}
                   height={STAFF_HEIGHT - 10}
                   pointerEvents="none"
@@ -150,7 +150,7 @@ export default function CompleteBoard({
                 {userItem && (
                   <foreignObject
                     x={slotX}
-                    y={5}
+                    y={2}
                     width={SLOT_WIDTH}
                     height={STAFF_HEIGHT - 10}
                     pointerEvents="none"

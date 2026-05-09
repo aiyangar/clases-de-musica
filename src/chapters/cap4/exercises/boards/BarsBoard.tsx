@@ -69,7 +69,7 @@ export default function BarsBoard({
             <foreignObject
               key={`item-${idx}`}
               x={x}
-              y={5}
+              y={2}
               width={ITEM_WIDTH}
               height={STAFF_HEIGHT - 10}
             >
