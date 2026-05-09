@@ -1,19 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Background from './Background';
-import { CHAPTERS } from '@/chapters/registry';
-import type { ChapterMeta } from '@/chapters/registry';
-
-const ACCENT_HEX: Record<ChapterMeta['accent'], string> = {
-  cyan: '#00ffff',
-  magenta: '#ff00ff',
-  electric: '#ffff00',
-  orange: '#ff9933',
-  lime: '#84ff00',
-  violet: '#b14fff',
-  coral: '#ff5577',
-  mint: '#00ff9d',
-};
+import {
+  LEVELS,
+  chaptersByLevel,
+  type ChapterMeta,
+  type LevelId,
+} from '@/chapters/registry';
+import {
+  chapterAccentHex,
+  chapterCardGradient,
+} from '@/chapters/gradient';
 
 const PAGE_SIZE = 3;
 
@@ -22,11 +19,23 @@ type Props = {
 };
 
 export default function Dashboard({ onSelect }: Props) {
-  const pages = useMemo(() => chunk(CHAPTERS, PAGE_SIZE), []);
+  const [activeLevel, setActiveLevel] = useState<LevelId>('principiante');
+  const chaptersInLevel = useMemo(
+    () => chaptersByLevel(activeLevel),
+    [activeLevel],
+  );
+  const pages = useMemo(
+    () => chunk(chaptersInLevel, PAGE_SIZE),
+    [chaptersInLevel],
+  );
   const totalPages = pages.length;
   const [page, setPage] = useState(0);
   const showPager = totalPages > 1;
   const currentChapters = pages[page] ?? [];
+
+  useEffect(() => {
+    setPage(0);
+  }, [activeLevel]);
 
   useEffect(() => {
     if (!showPager) return;
@@ -54,6 +63,7 @@ export default function Dashboard({ onSelect }: Props) {
             Clases de Música
           </h1>
           <p className="tagline mt-4 animate-flicker">Selecciona el capítulo</p>
+          <LevelSelector active={activeLevel} onSelect={setActiveLevel} />
         </header>
 
         <div className="relative w-full max-w-[1700px] flex items-center justify-center">
@@ -115,6 +125,41 @@ export default function Dashboard({ onSelect }: Props) {
   );
 }
 
+function LevelSelector({
+  active,
+  onSelect,
+}: {
+  active: LevelId;
+  onSelect: (level: LevelId) => void;
+}) {
+  return (
+    <div className="flex gap-3 mt-6 justify-center" role="tablist" aria-label="Selector de nivel">
+      {LEVELS.map((level) => {
+        const isActive = level.id === active;
+        return (
+          <button
+            key={level.id}
+            type="button"
+            onClick={() => onSelect(level.id)}
+            role="tab"
+            aria-selected={isActive}
+            className="font-orbitron text-sm tracking-[0.3em] uppercase px-6 py-2 rounded-full border-2 transition-all"
+            style={{
+              color: level.accentHex,
+              borderColor: isActive ? level.accentHex : `${level.accentHex}55`,
+              background: isActive ? `${level.accentHex}22` : 'transparent',
+              textShadow: isActive ? `0 0 12px ${level.accentHex}` : 'none',
+              boxShadow: isActive ? `0 0 20px ${level.accentHex}55` : 'none',
+            }}
+          >
+            {level.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 type CardProps = {
   chapter: ChapterMeta;
   index: number;
@@ -122,7 +167,8 @@ type CardProps = {
 };
 
 function ChapterCard({ chapter, index, onSelect }: CardProps) {
-  const accent = ACCENT_HEX[chapter.accent];
+  const chapterHex = chapterAccentHex(chapter);
+  const cardGradient = chapterCardGradient(chapter);
   const isLive = chapter.status === 'available';
 
   return (
@@ -135,15 +181,16 @@ function ChapterCard({ chapter, index, onSelect }: CardProps) {
       whileHover={{ y: -6, scale: 1.02 }}
       className="relative text-left rounded-3xl p-7 overflow-hidden bg-base/60 backdrop-blur-md cursor-pointer transition-shadow"
       style={{
-        border: `2px solid ${accent}55`,
-        boxShadow: `0 0 36px ${accent}33`,
+        border: `2px solid ${chapterHex}88`,
+        boxShadow: `0 0 36px ${chapterHex}33`,
       }}
       aria-label={`Abrir capítulo ${chapter.number}: ${chapter.title}`}
     >
       <div
-        className="absolute inset-0 pointer-events-none opacity-30"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          background: `radial-gradient(circle at 80% 0%, ${accent}55 0%, transparent 60%)`,
+          backgroundImage: cardGradient,
+          opacity: 0.45,
         }}
       />
 
@@ -151,7 +198,7 @@ function ChapterCard({ chapter, index, onSelect }: CardProps) {
         <div className="flex items-center justify-between">
           <span
             className="font-orbitron text-base tracking-[0.3em]"
-            style={{ color: accent, textShadow: `0 0 14px ${accent}` }}
+            style={{ color: chapterHex, textShadow: `0 0 14px ${chapterHex}` }}
           >
             CAPÍTULO {chapter.number}
           </span>
@@ -160,14 +207,14 @@ function ChapterCard({ chapter, index, onSelect }: CardProps) {
 
         <h2
           className="font-orbitron font-extrabold text-3xl md:text-4xl leading-[0.95] uppercase"
-          style={{ color: '#e0f7ff', textShadow: `0 0 18px ${accent}` }}
+          style={{ color: '#e0f7ff', textShadow: `0 0 18px ${chapterHex}` }}
         >
           {chapter.title}
         </h2>
 
         <span
           className="font-cinzel text-base md:text-lg tracking-[0.18em] uppercase"
-          style={{ color: accent, textShadow: `0 0 10px ${accent}` }}
+          style={{ color: chapterHex, textShadow: `0 0 10px ${chapterHex}` }}
         >
           {chapter.tagline}
         </span>
@@ -175,7 +222,7 @@ function ChapterCard({ chapter, index, onSelect }: CardProps) {
         <div className="mt-auto pt-4 flex items-center justify-between">
           <span
             className="font-orbitron text-sm tracking-[0.3em] uppercase"
-            style={{ color: accent }}
+            style={{ color: chapterHex }}
           >
             {isLive ? '▶ Iniciar' : '◈ Vista previa'}
           </span>
