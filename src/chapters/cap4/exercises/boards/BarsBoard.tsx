@@ -3,6 +3,7 @@ import type { BarsExercise } from '@/chapters/cap4/types';
 import TimeSignature from '@/components/music/TimeSignature';
 import NoteSymbol from '@/components/music/NoteSymbol';
 import RestSymbol from '@/components/music/RestSymbol';
+import { placedNoteY } from './placement';
 
 const ORANGE = '#ff9933';
 const STAFF_HEIGHT = 120;
@@ -10,6 +11,8 @@ const STAFF_LEFT = 110;        // after the time signature
 const STAFF_RIGHT_PAD = 20;
 const ITEM_WIDTH = 70;
 const SLOT_WIDTH = 28;          // tappable region between two items
+const NOTE_SIZE = 70;
+const ITEM_CONTAINER_H = STAFF_HEIGHT - 10;
 
 type Props = {
   exercise: BarsExercise;
@@ -30,6 +33,7 @@ export default function BarsBoard({
   }, [items.length]);
 
   const lineY = (i: number) => 20 + i * 22;
+  const itemY = placedNoteY(lineY, ITEM_CONTAINER_H, NOTE_SIZE);
 
   return (
     <div className="w-full overflow-x-auto">
@@ -69,13 +73,13 @@ export default function BarsBoard({
             <foreignObject
               key={`item-${idx}`}
               x={x}
-              y={2}
+              y={itemY}
               width={ITEM_WIDTH}
-              height={STAFF_HEIGHT - 10}
+              height={ITEM_CONTAINER_H}
             >
               <div className="flex h-full items-center justify-center">
                 {item.kind === 'figure' ? (
-                  <NoteSymbol kind={item.figure} direction="up" size={70} color={ORANGE} />
+                  <NoteSymbol kind={item.figure} direction="up" size={NOTE_SIZE} color={ORANGE} />
                 ) : (
                   <RestSymbol kind={item.rest} size={50} color={ORANGE} />
                 )}
