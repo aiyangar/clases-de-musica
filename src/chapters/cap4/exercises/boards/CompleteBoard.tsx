@@ -7,12 +7,15 @@ import TimeSignature from '@/components/music/TimeSignature';
 import NoteSymbol from '@/components/music/NoteSymbol';
 import RestSymbol from '@/components/music/RestSymbol';
 import type { PaletteSelection } from '../Palette';
+import { placedNoteY } from './placement';
 
 const ORANGE = '#ff9933';
 const STAFF_HEIGHT = 160;
 const SLOT_WIDTH = 56;
 const MEASURE_PAD = 10;
 const TIME_SIG_W = 90;
+const NOTE_SIZE = 56;
+const ITEM_CONTAINER_H = STAFF_HEIGHT - 10;
 
 type Props = {
   exercise: CompleteExercise;
@@ -35,6 +38,7 @@ export default function CompleteBoard({
   const totalStaffWidth = measureWidths.reduce((a, b) => a + b, 0);
   const totalWidth = TIME_SIG_W + totalStaffWidth + 30;
   const lineY = (i: number) => 30 + i * 22;
+  const itemY = placedNoteY(lineY, ITEM_CONTAINER_H, NOTE_SIZE);
 
   function handleBlankClick(measureIdx: number, slotIdx: number) {
     const key = `${measureIdx}:${slotIdx}`;
@@ -101,14 +105,14 @@ export default function CompleteBoard({
                 <foreignObject
                   key={`f-${mIdx}-${sIdx}`}
                   x={slotX}
-                  y={2}
+                  y={itemY}
                   width={SLOT_WIDTH}
-                  height={STAFF_HEIGHT - 10}
+                  height={ITEM_CONTAINER_H}
                   pointerEvents="none"
                 >
                   <div className="flex h-full items-center justify-center">
                     {slot.item.kind === 'figure' ? (
-                      <NoteSymbol kind={slot.item.figure} direction="up" size={56} color={ORANGE} />
+                      <NoteSymbol kind={slot.item.figure} direction="up" size={NOTE_SIZE} color={ORANGE} />
                     ) : (
                       <RestSymbol kind={slot.item.rest} size={42} color={ORANGE} />
                     )}
@@ -150,9 +154,9 @@ export default function CompleteBoard({
                 {userItem && (
                   <foreignObject
                     x={slotX}
-                    y={2}
+                    y={itemY}
                     width={SLOT_WIDTH}
-                    height={STAFF_HEIGHT - 10}
+                    height={ITEM_CONTAINER_H}
                     pointerEvents="none"
                   >
                     <div className="flex h-full items-center justify-center">
@@ -160,7 +164,7 @@ export default function CompleteBoard({
                         <NoteSymbol
                           kind={userItem.figure}
                           direction="up"
-                          size={56}
+                          size={NOTE_SIZE}
                           color={ORANGE}
                         />
                       ) : (

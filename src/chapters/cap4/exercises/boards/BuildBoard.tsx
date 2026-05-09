@@ -3,12 +3,15 @@ import TimeSignature from '@/components/music/TimeSignature';
 import NoteSymbol from '@/components/music/NoteSymbol';
 import RestSymbol from '@/components/music/RestSymbol';
 import type { PaletteSelection } from '../Palette';
+import { placedNoteY } from './placement';
 
 const ORANGE = '#ff9933';
 const STAFF_HEIGHT = 140;
 const STAFF_LEFT = 120;
 const SLOT_WIDTH = 80;
 const STAFF_PAD_RIGHT = 24;
+const NOTE_SIZE = 70;
+const ITEM_CONTAINER_H = STAFF_HEIGHT - 10;
 
 type Props = {
   exercise: BuildExercise;
@@ -32,6 +35,7 @@ export default function BuildBoard({
   const staffTopY = lineY(0);
   const staffBottomY = lineY(4);
   const measureRightX = totalWidth - STAFF_PAD_RIGHT;
+  const itemY = placedNoteY(lineY, ITEM_CONTAINER_H, NOTE_SIZE);
 
   function handleSlotClick(idx: number) {
     if (placed[idx]) {
@@ -119,14 +123,14 @@ export default function BuildBoard({
               {item && (
                 <foreignObject
                   x={x}
-                  y={2}
+                  y={itemY}
                   width={SLOT_WIDTH}
-                  height={STAFF_HEIGHT - 10}
+                  height={ITEM_CONTAINER_H}
                   pointerEvents="none"
                 >
                   <div className="flex h-full items-center justify-center">
                     {item.kind === 'figure' ? (
-                      <NoteSymbol kind={item.figure} direction="up" size={70} color={ORANGE} />
+                      <NoteSymbol kind={item.figure} direction="up" size={NOTE_SIZE} color={ORANGE} />
                     ) : (
                       <RestSymbol kind={item.rest} size={50} color={ORANGE} />
                     )}
