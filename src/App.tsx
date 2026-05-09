@@ -12,7 +12,7 @@ const HOME = '#/';
 
 function readView(): View {
   const hash = window.location.hash || HOME;
-  const match = /^#\/(cap-\d+)$/.exec(hash);
+  const match = /^#\/((?:principiante|intermedio|avanzado)-cap-\d+)$/.exec(hash);
   if (match && findChapter(match[1]!)) {
     return { kind: 'chapter', id: match[1]! };
   }
