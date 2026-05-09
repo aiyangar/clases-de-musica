@@ -26,6 +26,13 @@ const REST_Y_OVERRIDE: Partial<Record<Cap4Figure, number>> = {
   blanca: -5,   // half rest sits on the 3rd line from bottom
 };
 
+// Per-rest size override; small rests at REST_SIZE feel undersized, so whole and
+// half rests render at 2x.
+const REST_SIZE_OVERRIDE: Partial<Record<Cap4Figure, number>> = {
+  redonda: REST_SIZE * 2,
+  blanca: REST_SIZE * 2,
+};
+
 type Props = {
   exercise: CompleteExercise;
   filled: Map<string, FigureItem>;
@@ -55,6 +62,10 @@ export default function CompleteBoard({
       if (override !== undefined) return override;
     }
     return itemY;
+  }
+
+  function restSizeFor(rest: Cap4Figure): number {
+    return REST_SIZE_OVERRIDE[rest] ?? REST_SIZE;
   }
 
   function handleBlankClick(measureIdx: number, slotIdx: number) {
@@ -131,7 +142,7 @@ export default function CompleteBoard({
                     {slot.item.kind === 'figure' ? (
                       <NoteSymbol kind={slot.item.figure} direction="up" size={NOTE_SIZE} color={ORANGE} />
                     ) : (
-                      <RestSymbol kind={slot.item.rest} size={REST_SIZE} color={ORANGE} />
+                      <RestSymbol kind={slot.item.rest} size={restSizeFor(slot.item.rest)} color={ORANGE} />
                     )}
                   </div>
                 </foreignObject>
@@ -185,7 +196,7 @@ export default function CompleteBoard({
                           color={ORANGE}
                         />
                       ) : (
-                        <RestSymbol kind={userItem.rest} size={REST_SIZE} color={ORANGE} />
+                        <RestSymbol kind={userItem.rest} size={restSizeFor(userItem.rest)} color={ORANGE} />
                       )}
                     </div>
                   </foreignObject>
