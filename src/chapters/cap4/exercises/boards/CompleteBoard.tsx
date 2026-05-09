@@ -2,6 +2,7 @@ import type {
   CompleteExercise,
   FigureItem,
   CompleteSlot,
+  Cap4Figure,
 } from '@/chapters/cap4/types';
 import TimeSignature from '@/components/music/TimeSignature';
 import NoteSymbol from '@/components/music/NoteSymbol';
@@ -15,7 +16,15 @@ const SLOT_WIDTH = 56;
 const MEASURE_PAD = 10;
 const TIME_SIG_W = 90;
 const NOTE_SIZE = 56;
+const REST_SIZE = 42;
 const ITEM_CONTAINER_H = STAFF_HEIGHT - 10;
+
+// Per-rest vertical offset for the foreignObject. Whole and half rests sit on
+// specific staff positions that don't match the centered note container.
+const REST_Y_OVERRIDE: Partial<Record<Cap4Figure, number>> = {
+  redonda: -18, // whole rest hangs from the 4th line from bottom
+  blanca: -5,   // half rest sits on the 3rd line from bottom
+};
 
 type Props = {
   exercise: CompleteExercise;
@@ -39,6 +48,14 @@ export default function CompleteBoard({
   const totalWidth = TIME_SIG_W + totalStaffWidth + 30;
   const lineY = (i: number) => 30 + i * 22;
   const itemY = placedNoteY(lineY, ITEM_CONTAINER_H, NOTE_SIZE);
+
+  function yFor(item: FigureItem): number {
+    if (item.kind === 'rest') {
+      const override = REST_Y_OVERRIDE[item.rest];
+      if (override !== undefined) return override;
+    }
+    return itemY;
+  }
 
   function handleBlankClick(measureIdx: number, slotIdx: number) {
     const key = `${measureIdx}:${slotIdx}`;
@@ -105,7 +122,7 @@ export default function CompleteBoard({
                 <foreignObject
                   key={`f-${mIdx}-${sIdx}`}
                   x={slotX}
-                  y={itemY}
+                  y={yFor(slot.item)}
                   width={SLOT_WIDTH}
                   height={ITEM_CONTAINER_H}
                   pointerEvents="none"
@@ -114,7 +131,7 @@ export default function CompleteBoard({
                     {slot.item.kind === 'figure' ? (
                       <NoteSymbol kind={slot.item.figure} direction="up" size={NOTE_SIZE} color={ORANGE} />
                     ) : (
-                      <RestSymbol kind={slot.item.rest} size={42} color={ORANGE} />
+                      <RestSymbol kind={slot.item.rest} size={REST_SIZE} color={ORANGE} />
                     )}
                   </div>
                 </foreignObject>
@@ -154,7 +171,7 @@ export default function CompleteBoard({
                 {userItem && (
                   <foreignObject
                     x={slotX}
-                    y={itemY}
+                    y={yFor(userItem)}
                     width={SLOT_WIDTH}
                     height={ITEM_CONTAINER_H}
                     pointerEvents="none"
@@ -168,7 +185,7 @@ export default function CompleteBoard({
                           color={ORANGE}
                         />
                       ) : (
-                        <RestSymbol kind={userItem.rest} size={42} color={ORANGE} />
+                        <RestSymbol kind={userItem.rest} size={REST_SIZE} color={ORANGE} />
                       )}
                     </div>
                   </foreignObject>
