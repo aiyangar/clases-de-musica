@@ -65,7 +65,7 @@ export default function SlideEjercicioCompletar({ part }: Props) {
 
   return (
     <ExerciseShell
-      title={`Completar · ${part}/2`}
+      title="Ejercicio · completar"
       description={
         <>
           Llena los{' '}

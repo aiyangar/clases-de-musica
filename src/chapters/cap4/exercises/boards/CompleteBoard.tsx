@@ -118,6 +118,7 @@ export default function CompleteBoard({
             }
 
             const userItem = filled.get(key);
+            const slotCenterX = slotX + SLOT_WIDTH / 2;
             return (
               <g
                 key={`b-${mIdx}-${sIdx}`}
@@ -125,16 +126,27 @@ export default function CompleteBoard({
                 onClick={() => handleBlankClick(mIdx, sIdx)}
               >
                 <rect
-                  x={slotX + 4}
-                  y={lineY(0) - 24}
-                  width={SLOT_WIDTH - 8}
-                  height={lineY(4) - lineY(0) + 48}
-                  rx={4}
-                  fill={userItem ? 'transparent' : 'rgba(255, 153, 51, 0.08)'}
-                  stroke={'rgba(255, 153, 51, 0.4)'}
-                  strokeDasharray="5 3"
-                  strokeWidth={1.5}
+                  x={slotX}
+                  y={lineY(0) - 4}
+                  width={SLOT_WIDTH}
+                  height={lineY(4) - lineY(0) + 8}
+                  fill="transparent"
                 />
+                {!userItem && (
+                  <text
+                    x={slotCenterX}
+                    y={(lineY(0) + lineY(4)) / 2 + 7}
+                    fontFamily="Orbitron, sans-serif"
+                    fontWeight={700}
+                    fontSize={22}
+                    fill={ORANGE}
+                    fillOpacity={0.45}
+                    textAnchor="middle"
+                    pointerEvents="none"
+                  >
+                    +
+                  </text>
+                )}
                 {userItem && (
                   <foreignObject
                     x={slotX}

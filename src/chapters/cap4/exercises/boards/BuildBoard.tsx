@@ -8,10 +8,11 @@ const ORANGE = '#ff9933';
 const STAFF_HEIGHT = 140;
 const STAFF_LEFT = 120;
 const SLOT_WIDTH = 80;
+const STAFF_PAD_RIGHT = 24;
 
 type Props = {
   exercise: BuildExercise;
-  placed: (FigureItem | null)[]; // length === exercise.required.length
+  placed: (FigureItem | null)[];
   selectedPaletteItem: PaletteSelection | null;
   onPlaceAt: (slotIndex: number) => void;
   onClearAt: (slotIndex: number) => void;
@@ -25,8 +26,12 @@ export default function BuildBoard({
   onClearAt,
 }: Props) {
   const slotCount = exercise.required.length;
-  const totalWidth = STAFF_LEFT + slotCount * SLOT_WIDTH + 60;
+  const totalWidth =
+    STAFF_LEFT + slotCount * SLOT_WIDTH + STAFF_PAD_RIGHT * 2;
   const lineY = (i: number) => 30 + i * 22;
+  const staffTopY = lineY(0);
+  const staffBottomY = lineY(4);
+  const measureRightX = totalWidth - STAFF_PAD_RIGHT;
 
   function handleSlotClick(idx: number) {
     if (placed[idx]) {
@@ -53,7 +58,7 @@ export default function BuildBoard({
           <line
             key={i}
             x1={STAFF_LEFT}
-            x2={totalWidth - 30}
+            x2={measureRightX}
             y1={lineY(i)}
             y2={lineY(i)}
             stroke={ORANGE}
@@ -73,23 +78,44 @@ export default function BuildBoard({
           </div>
         </foreignObject>
 
+        <line
+          x1={STAFF_LEFT}
+          x2={STAFF_LEFT}
+          y1={staffTopY}
+          y2={staffBottomY}
+          stroke={ORANGE}
+          strokeWidth={2.5}
+        />
+
         {Array.from({ length: slotCount }).map((_, idx) => {
           const x = STAFF_LEFT + idx * SLOT_WIDTH;
           const item = placed[idx];
+          const slotCenterX = x + SLOT_WIDTH / 2;
           return (
             <g key={idx} style={{ cursor: 'pointer' }}>
               <rect
-                x={x + 5}
-                y={lineY(0) - 30}
-                width={SLOT_WIDTH - 10}
-                height={lineY(4) - lineY(0) + 60}
-                rx={6}
-                fill={item ? 'transparent' : 'rgba(255, 153, 51, 0.08)'}
-                stroke={item ? 'transparent' : 'rgba(255, 153, 51, 0.35)'}
-                strokeDasharray="6 4"
-                strokeWidth={1.5}
+                x={x}
+                y={staffTopY - 4}
+                width={SLOT_WIDTH}
+                height={staffBottomY - staffTopY + 8}
+                fill="transparent"
                 onClick={() => handleSlotClick(idx)}
               />
+              {!item && (
+                <text
+                  x={slotCenterX}
+                  y={(staffTopY + staffBottomY) / 2 + 8}
+                  fontFamily="Orbitron, sans-serif"
+                  fontWeight={700}
+                  fontSize={26}
+                  fill={ORANGE}
+                  fillOpacity={0.45}
+                  textAnchor="middle"
+                  pointerEvents="none"
+                >
+                  +
+                </text>
+              )}
               {item && (
                 <foreignObject
                   x={x}
@@ -107,27 +133,24 @@ export default function BuildBoard({
                   </div>
                 </foreignObject>
               )}
-              {item && (
-                <rect
-                  x={x + 5}
-                  y={lineY(0) - 30}
-                  width={SLOT_WIDTH - 10}
-                  height={lineY(4) - lineY(0) + 60}
-                  fill="transparent"
-                  onClick={() => handleSlotClick(idx)}
-                />
-              )}
             </g>
           );
         })}
 
         <line
-          x1={totalWidth - 30}
-          x2={totalWidth - 30}
-          y1={lineY(0)}
-          y2={lineY(4)}
+          x1={measureRightX - 8}
+          x2={measureRightX - 8}
+          y1={staffTopY}
+          y2={staffBottomY}
           stroke={ORANGE}
-          strokeWidth={3}
+          strokeWidth={2.5}
+        />
+        <rect
+          x={measureRightX - 2}
+          y={staffTopY}
+          width={5}
+          height={staffBottomY - staffTopY}
+          fill={ORANGE}
         />
       </svg>
     </div>

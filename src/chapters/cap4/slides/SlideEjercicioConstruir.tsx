@@ -69,7 +69,7 @@ export default function SlideEjercicioConstruir({ part }: Props) {
 
   return (
     <ExerciseShell
-      title={`Construir · ${part}/2`}
+      title="Ejercicio · construir"
       description={
         <>
           Coloca las figuras del palette dentro del compás.{' '}
