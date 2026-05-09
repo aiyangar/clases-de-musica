@@ -1,6 +1,6 @@
 import NoteSymbol from '@/components/music/NoteSymbol';
 import RestSymbol from '@/components/music/RestSymbol';
-import type { Cap4Figure } from '@/chapters/cap4/types';
+import type { Cap4Figure, FigureItem } from '@/chapters/cap4/types';
 
 const ORANGE = '#ff9933';
 const ORANGE_DIM = 'rgba(255, 153, 51, 0.45)';
@@ -12,10 +12,11 @@ export type PaletteSelection =
   | { kind: 'rest'; rest: Cap4Figure }
   | { kind: 'bar' };
 
-export type PoolEntry = {
-  selection: Exclude<PaletteSelection, { kind: 'bar' }>;
-  remaining: number;
-  total: number;
+export type FlatPoolProps = {
+  items: FigureItem[];
+  usedIndices: Set<number>;
+  selectedIndex: number | null;
+  onSelectIndex: (index: number) => void;
 };
 
 type Props = {
@@ -23,7 +24,7 @@ type Props = {
   onSelect: (sel: PaletteSelection) => void;
   showBarTool?: boolean;
   showFigureTools?: boolean;
-  pool?: PoolEntry[];
+  flatPool?: FlatPoolProps;
 };
 
 export default function Palette({
@@ -31,7 +32,7 @@ export default function Palette({
   onSelect,
   showBarTool = false,
   showFigureTools = true,
-  pool,
+  flatPool,
 }: Props) {
   return (
     <div
@@ -61,32 +62,30 @@ export default function Palette({
         </PaletteButton>
       )}
 
-      {showFigureTools && pool
-        ? pool.map((entry) => {
-            const sel = entry.selection;
-            const isSel = isSameSelection(selected, sel);
-            const disabled = entry.remaining <= 0;
-            const label = sel.kind === 'figure' ? sel.figure : `silencio ${sel.rest}`;
+      {showFigureTools && flatPool
+        ? flatPool.items.map((item, idx) => {
+            const isUsed = flatPool.usedIndices.has(idx);
+            const isSel = !isUsed && flatPool.selectedIndex === idx;
+            const label = item.kind === 'figure' ? item.figure : `silencio ${item.rest}`;
             return (
               <PaletteButton
-                key={poolKey(entry)}
+                key={`flat-${idx}`}
                 label={label}
                 isSelected={isSel}
-                disabled={disabled}
-                onClick={() => !disabled && onSelect(sel)}
-                badge={`${entry.remaining}/${entry.total}`}
+                disabled={isUsed}
+                onClick={() => !isUsed && flatPool.onSelectIndex(idx)}
               >
-                {sel.kind === 'figure' ? (
-                  <NoteSymbol kind={sel.figure} direction="up" size={64} color={ORANGE} />
+                {item.kind === 'figure' ? (
+                  <NoteSymbol kind={item.figure} direction="up" size={64} color={ORANGE} />
                 ) : (
-                  <RestSymbol kind={sel.rest} size={48} color={ORANGE} />
+                  <RestSymbol kind={item.rest} size={48} color={ORANGE} />
                 )}
               </PaletteButton>
             );
           })
         : null}
 
-      {showFigureTools && !pool && (
+      {showFigureTools && !flatPool && (
         <>
           {FIGURES.map((f) => {
             const isSel =
@@ -123,35 +122,18 @@ export default function Palette({
   );
 }
 
-function poolKey(entry: PoolEntry): string {
-  const sel = entry.selection;
-  return sel.kind === 'figure' ? `fig-${sel.figure}` : `rest-${sel.rest}`;
-}
-
-function isSameSelection(
-  a: PaletteSelection | null,
-  b: PaletteSelection,
-): boolean {
-  if (!a || a.kind !== b.kind) return false;
-  if (a.kind === 'figure' && b.kind === 'figure') return a.figure === b.figure;
-  if (a.kind === 'rest' && b.kind === 'rest') return a.rest === b.rest;
-  return false;
-}
-
 function PaletteButton({
   label,
   isSelected,
   disabled,
   onClick,
   children,
-  badge,
 }: {
   label: string;
   isSelected: boolean;
   disabled: boolean;
   onClick: () => void;
   children: React.ReactNode;
-  badge?: string;
 }) {
   return (
     <button
@@ -159,7 +141,7 @@ function PaletteButton({
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="relative flex items-center justify-center rounded-xl border-2 transition-colors disabled:cursor-not-allowed"
+      className="flex items-center justify-center rounded-xl border-2 transition-colors disabled:cursor-not-allowed"
       style={{
         width: 88,
         height: 88,
@@ -172,19 +154,6 @@ function PaletteButton({
       }}
     >
       {children}
-      {badge && (
-        <span
-          className="absolute font-orbitron text-xs tracking-[0.15em]"
-          style={{
-            top: 4,
-            right: 6,
-            color: ORANGE,
-            textShadow: `0 0 6px ${ORANGE}`,
-          }}
-        >
-          {badge}
-        </span>
-      )}
     </button>
   );
 }
