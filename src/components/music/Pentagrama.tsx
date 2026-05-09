@@ -68,12 +68,12 @@ const CLEF_GLYPHS: Record<ClefKind, string> = {
   do: '\u{1D121}',
 };
 
-const CLEF_FONT_SIZE = 130;
+const CLEF_FONT_SIZE = 210;
 const CLEF_X = STAFF_X_START + 8 + CLEF_WIDTH / 2;
 const CLEF_BASELINE_Y: Record<ClefKind, number> = {
-  sol: 213,
-  fa: 175,
-  do: 220,
+  sol: 220,
+  fa: 230,
+  do: 230,
 };
 const CLEF_DEFAULT_LINE: Record<ClefKind, number> = {
   sol: 2,
