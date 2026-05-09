@@ -18,7 +18,7 @@ export type ChapterMeta = {
   description: string;
   topics: string[];
   status: ChapterStatus;
-  accent: 'cyan' | 'magenta' | 'electric' | 'orange';
+  accent: 'cyan' | 'magenta' | 'electric' | 'orange' | 'lime' | 'violet' | 'coral' | 'mint';
   presentation?: ComponentType<ChapterPresentationProps>;
 };
 
@@ -89,6 +89,66 @@ export const CHAPTERS: ChapterMeta[] = [
     status: 'available',
     accent: 'orange',
     presentation: Cap4Presentation,
+  },
+  {
+    id: 'cap-5',
+    number: 'V',
+    title: 'Líneas Adicionales',
+    tagline: 'Códigos del Registro',
+    description:
+      'Cuando una nota se sale del pentagrama: líneas adicionales superiores e inferiores para extender el registro hacia el agudo o el grave.',
+    topics: [
+      'Líneas adicionales superiores',
+      'Líneas adicionales inferiores',
+      'Conteo y lectura',
+    ],
+    status: 'mockup',
+    accent: 'lime',
+  },
+  {
+    id: 'cap-6',
+    number: 'VI',
+    title: 'El Tiempo',
+    tagline: 'Códigos del Pulso',
+    description:
+      'Cifra de compás, valores del numerador y denominador, y cómo el pulso organiza el tiempo musical en compases simples y compuestos.',
+    topics: [
+      'Cifra de compás',
+      'Compás simple y compuesto',
+      'Pulso y subdivisión',
+    ],
+    status: 'mockup',
+    accent: 'violet',
+  },
+  {
+    id: 'cap-7',
+    number: 'VII',
+    title: 'Formas de Alargar el Sonido',
+    tagline: 'Códigos de la Prolongación',
+    description:
+      'Recursos para extender la duración de una nota: ligadura de prolongación, puntillo, doble puntillo y calderón.',
+    topics: [
+      'Ligadura de prolongación',
+      'Puntillo y doble puntillo',
+      'Calderón',
+    ],
+    status: 'mockup',
+    accent: 'coral',
+  },
+  {
+    id: 'cap-8',
+    number: 'VIII',
+    title: 'Principales Abreviaturas',
+    tagline: 'Códigos de la Repetición',
+    description:
+      'Símbolos para repetir secciones y dirigir la lectura: barras de repetición, casillas, da capo, dal segno y coda.',
+    topics: [
+      'Barras de repetición',
+      'Casillas (1ª y 2ª)',
+      'Da capo, dal segno y coda',
+    ],
+    status: 'mockup',
+    accent: 'mint',
   },
 ];
 
