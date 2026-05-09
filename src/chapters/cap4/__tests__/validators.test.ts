@@ -61,24 +61,31 @@ describe('validateBuild', () => {
     required: [negra(), negra(), blanca()],
   };
 
-  it('returns true when placed multiset equals required', () => {
+  it('returns true when placed exact required multiset', () => {
     expect(validateBuild(ex, [blanca(), negra(), negra()])).toBe(true);
   });
 
-  it('counts duplicates correctly', () => {
+  it('returns false when placed sums to less than the indicator', () => {
     expect(validateBuild(ex, [negra(), negra(), negra()])).toBe(false);
   });
 
-  it('returns false when placed has fewer items', () => {
+  it('returns false when placed has fewer items than required.length', () => {
     expect(validateBuild(ex, [negra(), negra()])).toBe(false);
   });
 
-  it('returns false when placed has more items', () => {
+  it('returns false when placed has more items than required.length', () => {
     expect(validateBuild(ex, [negra(), negra(), blanca(), corchea()])).toBe(false);
   });
 
-  it('treats figure and rest of the same value as different', () => {
-    expect(validateBuild(ex, [negra(), restNegra, blanca()])).toBe(false);
+  it('accepts a rest of equal value as a substitute for a figure', () => {
+    // open validation: same count, same sum (1 + 1 + 2 = 4)
+    expect(validateBuild(ex, [negra(), restNegra, blanca()])).toBe(true);
+  });
+
+  it('accepts any combination that matches count and sum', () => {
+    // ex.required = [N, N, B] → 3 items, sum 4 → any 3 items summing to 4
+    expect(validateBuild(ex, [blanca(), blanca(), corchea()])).toBe(false); // 4.5
+    expect(validateBuild(ex, [blanca(), negra(), restNegra])).toBe(true);   // 4
   });
 });
 

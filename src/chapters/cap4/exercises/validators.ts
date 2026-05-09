@@ -4,6 +4,7 @@ import type {
   CompleteExercise,
   FigureItem,
 } from '@/chapters/cap4/types';
+import { TIME_SIG_VALUE, itemValue } from '@/chapters/cap4/types';
 
 export function validateBars(ex: BarsExercise, userBars: number[]): boolean {
   const a = [...userBars].sort((x, y) => x - y);
@@ -12,28 +13,10 @@ export function validateBars(ex: BarsExercise, userBars: number[]): boolean {
   return a.every((v, i) => v === b[i]);
 }
 
-function itemKey(item: FigureItem): string {
-  if (item.kind === 'figure') return `f:${item.figure}:${item.step}`;
-  return `r:${item.rest}`;
-}
-
-function multisetCounts(items: FigureItem[]): Map<string, number> {
-  const m = new Map<string, number>();
-  for (const item of items) {
-    const k = itemKey(item);
-    m.set(k, (m.get(k) ?? 0) + 1);
-  }
-  return m;
-}
-
 export function validateBuild(ex: BuildExercise, placed: FigureItem[]): boolean {
-  const a = multisetCounts(placed);
-  const b = multisetCounts(ex.required);
-  if (a.size !== b.size) return false;
-  for (const [k, v] of b) {
-    if (a.get(k) !== v) return false;
-  }
-  return true;
+  if (placed.length !== ex.required.length) return false;
+  const sum = placed.reduce((s, item) => s + itemValue(item), 0);
+  return sum === TIME_SIG_VALUE[ex.timeSig];
 }
 
 function itemsEqual(a: FigureItem, b: FigureItem): boolean {
