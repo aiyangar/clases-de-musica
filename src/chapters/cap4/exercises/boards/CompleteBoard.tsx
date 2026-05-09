@@ -5,7 +5,7 @@ import type {
   Cap4Figure,
 } from '@/chapters/cap4/types';
 import TimeSignature from '@/components/music/TimeSignature';
-import NoteSymbol from '@/components/music/NoteSymbol';
+import NoteSymbol, { type FigureKind } from '@/components/music/NoteSymbol';
 import RestSymbol from '@/components/music/RestSymbol';
 import type { PaletteSelection } from '../Palette';
 import { placedNoteY } from './placement';
@@ -26,11 +26,16 @@ const REST_Y_OVERRIDE: Partial<Record<Cap4Figure, number>> = {
   blanca: -8,   // half rest sits on the 3rd line from bottom
 };
 
-// Per-rest size override; small rests at REST_SIZE feel undersized, so whole and
-// half rests render at 2x.
-const REST_SIZE_OVERRIDE: Partial<Record<Cap4Figure, number>> = {
+// Per-rest size override. Whole/half rests render at 2x; eighth rest and
+// smaller render at 1/2 because their SVGs are tall and dominate otherwise.
+const REST_SIZE_OVERRIDE: Partial<Record<FigureKind, number>> = {
   redonda: REST_SIZE * 2,
   blanca: REST_SIZE * 2,
+  corchea: REST_SIZE / 2,
+  semicorchea: REST_SIZE / 2,
+  fusa: REST_SIZE / 2,
+  semifusa: REST_SIZE / 2,
+  garrapatea: REST_SIZE / 2,
 };
 
 type Props = {
