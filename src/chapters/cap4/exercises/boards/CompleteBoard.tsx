@@ -2,13 +2,12 @@ import type {
   CompleteExercise,
   FigureItem,
   CompleteSlot,
-  Cap4Figure,
 } from '@/chapters/cap4/types';
 import TimeSignature from '@/components/music/TimeSignature';
-import NoteSymbol, { type FigureKind } from '@/components/music/NoteSymbol';
+import NoteSymbol from '@/components/music/NoteSymbol';
 import RestSymbol from '@/components/music/RestSymbol';
 import type { PaletteSelection } from '../Palette';
-import { placedNoteY } from './placement';
+import { placedNoteY, placedRestY, restSize } from '@/components/music/staffPlacement';
 
 const ORANGE = '#ff9933';
 const STAFF_HEIGHT = 160;
@@ -16,27 +15,8 @@ const SLOT_WIDTH = 56;
 const MEASURE_PAD = 10;
 const TIME_SIG_W = 90;
 const NOTE_SIZE = 56;
-const REST_SIZE = 42;
+const REST_BASE_SIZE = 42;
 const ITEM_CONTAINER_H = STAFF_HEIGHT - 10;
-
-// Per-rest vertical offset for the foreignObject. Whole and half rests sit on
-// specific staff positions that don't match the centered note container.
-const REST_Y_OVERRIDE: Partial<Record<Cap4Figure, number>> = {
-  redonda: -16, // whole rest hangs from the 4th line from bottom
-  blanca: -8,   // half rest sits on the 3rd line from bottom
-};
-
-// Per-rest size override. Whole/half rests render at 2x; eighth rest and
-// smaller render at 1/2 because their SVGs are tall and dominate otherwise.
-const REST_SIZE_OVERRIDE: Partial<Record<FigureKind, number>> = {
-  redonda: REST_SIZE * 2,
-  blanca: REST_SIZE * 2,
-  corchea: REST_SIZE / 2,
-  semicorchea: REST_SIZE / 2,
-  fusa: REST_SIZE / 2,
-  semifusa: REST_SIZE / 2,
-  garrapatea: REST_SIZE / 2,
-};
 
 type Props = {
   exercise: CompleteExercise;
@@ -63,14 +43,9 @@ export default function CompleteBoard({
 
   function yFor(item: FigureItem): number {
     if (item.kind === 'rest') {
-      const override = REST_Y_OVERRIDE[item.rest];
-      if (override !== undefined) return override;
+      return placedRestY(item.rest, lineY, ITEM_CONTAINER_H);
     }
     return itemY;
-  }
-
-  function restSizeFor(rest: Cap4Figure): number {
-    return REST_SIZE_OVERRIDE[rest] ?? REST_SIZE;
   }
 
   function handleBlankClick(measureIdx: number, slotIdx: number) {
@@ -147,7 +122,7 @@ export default function CompleteBoard({
                     {slot.item.kind === 'figure' ? (
                       <NoteSymbol kind={slot.item.figure} direction="up" size={NOTE_SIZE} color={ORANGE} />
                     ) : (
-                      <RestSymbol kind={slot.item.rest} size={restSizeFor(slot.item.rest)} color={ORANGE} />
+                      <RestSymbol kind={slot.item.rest} size={restSize(slot.item.rest, REST_BASE_SIZE)} color={ORANGE} />
                     )}
                   </div>
                 </foreignObject>
@@ -201,7 +176,7 @@ export default function CompleteBoard({
                           color={ORANGE}
                         />
                       ) : (
-                        <RestSymbol kind={userItem.rest} size={restSizeFor(userItem.rest)} color={ORANGE} />
+                        <RestSymbol kind={userItem.rest} size={restSize(userItem.rest, REST_BASE_SIZE)} color={ORANGE} />
                       )}
                     </div>
                   </foreignObject>
