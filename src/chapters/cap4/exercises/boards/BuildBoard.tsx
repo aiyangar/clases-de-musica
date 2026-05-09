@@ -119,7 +119,7 @@ export default function BuildBoard({
               {item && (
                 <foreignObject
                   x={x}
-                  y={5}
+                  y={2}
                   width={SLOT_WIDTH}
                   height={STAFF_HEIGHT - 10}
                   pointerEvents="none"
