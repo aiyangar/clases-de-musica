@@ -9,6 +9,10 @@ const ACCENT_HEX: Record<ChapterMeta['accent'], string> = {
   magenta: '#ff00ff',
   electric: '#ffff00',
   orange: '#ff9933',
+  lime: '#84ff00',
+  violet: '#b14fff',
+  coral: '#ff5577',
+  mint: '#00ff9d',
 };
 
 type Props = {
