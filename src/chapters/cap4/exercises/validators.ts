@@ -19,31 +19,25 @@ export function validateBuild(ex: BuildExercise, placed: FigureItem[]): boolean 
   return sum === TIME_SIG_VALUE[ex.timeSig];
 }
 
-function itemsEqual(a: FigureItem, b: FigureItem): boolean {
-  if (a.kind !== b.kind) return false;
-  if (a.kind === 'figure' && b.kind === 'figure') {
-    return a.figure === b.figure && a.step === b.step;
-  }
-  if (a.kind === 'rest' && b.kind === 'rest') {
-    return a.rest === b.rest;
-  }
-  return false;
-}
-
 export function validateComplete(
   ex: CompleteExercise,
   filled: Map<string, FigureItem>,
 ): boolean {
+  const target = TIME_SIG_VALUE[ex.timeSig];
   for (let mIdx = 0; mIdx < ex.measures.length; mIdx++) {
     const measure = ex.measures[mIdx];
+    let sum = 0;
     for (let sIdx = 0; sIdx < measure.slots.length; sIdx++) {
       const slot = measure.slots[sIdx];
-      if (slot.kind !== 'blank') continue;
-      const key = `${mIdx}:${sIdx}`;
-      const userItem = filled.get(key);
+      if (slot.kind === 'fixed') {
+        sum += itemValue(slot.item);
+        continue;
+      }
+      const userItem = filled.get(`${mIdx}:${sIdx}`);
       if (!userItem) return false;
-      if (!itemsEqual(userItem, slot.expected)) return false;
+      sum += itemValue(userItem);
     }
+    if (sum !== target) return false;
   }
   return true;
 }

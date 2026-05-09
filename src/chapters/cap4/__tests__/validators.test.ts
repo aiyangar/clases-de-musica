@@ -104,8 +104,14 @@ describe('validateComplete', () => {
     ],
   };
 
-  it('returns true when every blank has the expected item', () => {
+  it('returns true when every measure sums to the target with the expected fill', () => {
+    // measure: N (1) + blank + B (2) = target 4 → blank must contribute 1
     const filled = new Map<string, FigureItem>([['0:1', negra()]]);
+    expect(validateComplete(ex, filled)).toBe(true);
+  });
+
+  it('accepts a rest of equal value as a fill (open validation)', () => {
+    const filled = new Map<string, FigureItem>([['0:1', restNegra]]);
     expect(validateComplete(ex, filled)).toBe(true);
   });
 
@@ -114,7 +120,8 @@ describe('validateComplete', () => {
     expect(validateComplete(ex, filled)).toBe(false);
   });
 
-  it('returns false when a blank has the wrong item', () => {
+  it('returns false when a fill changes the measure sum', () => {
+    // blanca (2) instead of negra (1): sum becomes 5, not 4
     const filled = new Map<string, FigureItem>([['0:1', blanca()]]);
     expect(validateComplete(ex, filled)).toBe(false);
   });
