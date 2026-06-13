@@ -12,14 +12,14 @@ export default function SlideArmonia() {
           <div className="def-box">
             <span className="def-symbol" aria-hidden="true">◈</span>
             <p className="body-text">
-              Es la combinación de <strong>varios sonidos a la vez</strong>.
-              Cuando se apilan tres o más notas: nace un <em>acorde</em>.
+              Es la combinación de <strong>varios sonidos a la vez</strong>: al
+              apilar tres o más notas, nace un <em>acorde</em>.
             </p>
           </div>
 
           <p className="body-text">
-            Bajo, acordes y melodía corriendo en <em>paralelo</em> son lo que
-            hace que un beat de reguetón te golpee en el pecho.
+            Bajo, acordes y melodía en <em>paralelo</em>: lo que hace que un
+            beat de reguetón te golpee en el pecho.
           </p>
         </div>
 

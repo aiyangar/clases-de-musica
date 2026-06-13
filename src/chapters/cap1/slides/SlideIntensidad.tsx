@@ -16,16 +16,6 @@ export default function SlideIntensidad() {
               <em>fuerte</em> o <em>suave</em> lo percibimos.
             </p>
           </div>
-
-          <p className="body-text">
-            Depende de la <strong>amplitud</strong> de las ondas. Se mide en{' '}
-            <em>decibelios (dB)</em>.
-          </p>
-
-          <p className="body-text">
-            Una balada acústica en TikTok: <em>baja intensidad</em>. Un
-            concierto de rock en primera fila: <em>alta intensidad</em>.
-          </p>
         </div>
 
         <VUMeter />

@@ -16,16 +16,6 @@ export default function SlideAltura() {
               uno <em>agudo</em>.
             </p>
           </div>
-
-          <p className="body-text">
-            Depende de la <strong>frecuencia</strong>: cuántas veces vibra una
-            onda por segundo. Más vibraciones, sonido más agudo.
-          </p>
-
-          <p className="body-text">
-            Voz <em>grave</em>: Billie Eilish susurrando. Voz <em>aguda</em>:
-            Ariana Grande en el silbato.
-          </p>
         </div>
 
         <FrequencyBars />

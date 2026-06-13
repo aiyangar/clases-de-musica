@@ -10,16 +10,15 @@ export default function SlideMelodia() {
       <div className="def-box">
         <span className="def-symbol" aria-hidden="true">◈</span>
         <p className="body-text">
-          Una <strong>sucesión ordenada de notas</strong>. Es{' '}
-          <em>lo que tarareas</em> cuando una canción se te queda pegada.
+          Una <strong>sucesión ordenada de notas</strong>:{' '}
+          <em>lo que tarareas</em> cuando una canción se te pega.
         </p>
       </div>
 
       <Pentagrama />
 
       <p className="body-text text-center">
-        Suben, bajan, saltan: las notas dibujan la línea que tu cerebro{' '}
-        <em>recuerda</em>.
+        Suben, bajan, saltan: la línea que tu cerebro <em>recuerda</em>.
       </p>
     </div>
   );

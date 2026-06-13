@@ -16,7 +16,7 @@ export default function Pentagrama() {
       style={{
         width: '100%',
         maxWidth: '1200px',
-        maxHeight: 'clamp(140px, 30vh, 280px)',
+        maxHeight: 'clamp(120px, 22vh, 200px)',
       }}
       preserveAspectRatio="xMidYMid meet"
       role="img"
