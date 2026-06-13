@@ -34,12 +34,13 @@ export default function Dashboard({ onSelect }: Props) {
   );
   const totalPages = pages.length;
   const [page, setPage] = useState(0);
+  const [prevLevel, setPrevLevel] = useState(activeLevel);
+  if (activeLevel !== prevLevel) {
+    setPrevLevel(activeLevel);
+    setPage(0);
+  }
   const showPager = totalPages > 1;
   const currentChapters = pages[page] ?? [];
-
-  useEffect(() => {
-    setPage(0);
-  }, [activeLevel]);
 
   useEffect(() => {
     if (!showPager) return;
