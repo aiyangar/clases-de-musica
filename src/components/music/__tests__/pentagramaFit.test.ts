@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { fitViewBox } from '../Pentagrama';
+import { fitViewBox } from '../pentagramaGeometry';
 
 describe('fitViewBox', () => {
   it('returns the default 0..320 range when no notes', () => {

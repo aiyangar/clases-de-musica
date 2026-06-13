@@ -1,5 +1,15 @@
 import { useMemo } from 'react';
 import type { ClefKind, StaffNote, FigureKind } from './types';
+import {
+  STAFF_BOTTOM,
+  LINE_GAP,
+  VB_WIDTH,
+  VB_HEIGHT,
+  NOTE_LABEL_FONT_SIZE,
+  stepToY,
+  labelYFor,
+  fitViewBox,
+} from './pentagramaGeometry';
 
 import redondaSvg from '@/assets/music/sounds/redonda.svg';
 import blancaUpSvg from '@/assets/music/sounds/blanca.svg';
@@ -31,18 +41,12 @@ type Props = {
   fitNotes?: boolean;
 };
 
-const STAFF_TOP = 110;
-const STAFF_BOTTOM = 210;
-const LINE_GAP = (STAFF_BOTTOM - STAFF_TOP) / 4;
-const VB_WIDTH = 800;
-const VB_HEIGHT = 320;
 const STAFF_X_START = 60;
 const STAFF_X_END = VB_WIDTH - 40;
 const CLEF_WIDTH = 70;
 const NOTE_AREA_X_START = 160;
 const NOTE_AREA_X_END = STAFF_X_END - 30;
 const LEDGER_HALF_WIDTH = 22;
-const NOTEHEAD_HALF_HEIGHT = 26;
 const MUSIC_FONT_STACK =
   '"Noto Music", "Apple Symbols", "Segoe UI Symbol", serif';
 
@@ -81,13 +85,6 @@ const CLEF_DEFAULT_LINE: Record<ClefKind, number> = {
   fa: 4,
   do: 3,
 };
-const NOTE_LABEL_FONT_SIZE = 28;
-const NOTE_LABEL_OFFSET_BELOW_STAFF = 38;
-
-function stepToY(step: number): number {
-  return STAFF_BOTTOM - step * (LINE_GAP / 2);
-}
-
 function noteX(idx: number, count: number): number {
   if (count === 1) return (NOTE_AREA_X_START + NOTE_AREA_X_END) / 2;
   return (
@@ -110,41 +107,8 @@ function shouldFlipFor(step: number, figure: FigureKind): boolean {
   return figure !== 'redonda' && step > 4;
 }
 
-function labelYFor(step: number): number {
-  if (step > 8) return stepToY(step) - NOTEHEAD_HALF_HEIGHT - 14;
-  if (step < 0) {
-    return Math.max(
-      stepToY(step) + NOTEHEAD_HALF_HEIGHT + 24,
-      STAFF_BOTTOM + NOTE_LABEL_OFFSET_BELOW_STAFF,
-    );
-  }
-  return STAFF_BOTTOM + NOTE_LABEL_OFFSET_BELOW_STAFF;
-}
-
 function colorFilterId(color: string): string {
   return `note-tint-${color.replace('#', '').toLowerCase()}`;
-}
-
-function noteExtent(step: number): { top: number; bottom: number } {
-  const y = stepToY(step);
-  const labelY = labelYFor(step);
-  const top = Math.min(y - NOTEHEAD_HALF_HEIGHT, labelY - NOTE_LABEL_FONT_SIZE);
-  const bottom = Math.max(y + NOTEHEAD_HALF_HEIGHT, labelY + NOTE_LABEL_FONT_SIZE * 0.35);
-  return { top, bottom };
-}
-
-export function fitViewBox(steps: number[]): { y: number; height: number } {
-  const PAD = 16;
-  let top = 0;
-  let bottom = VB_HEIGHT;
-  for (const s of steps) {
-    const e = noteExtent(s);
-    top = Math.min(top, e.top);
-    bottom = Math.max(bottom, e.bottom);
-  }
-  if (top < 0) top -= PAD;
-  if (bottom > VB_HEIGHT) bottom += PAD;
-  return { y: top, height: bottom - top };
 }
 
 export default function Pentagrama({
