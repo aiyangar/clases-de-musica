@@ -21,17 +21,19 @@ const ITEMS: Item[] = [
 
 export default function SlideCatalogoSignos() {
   return (
-    <div className="flex-1 flex flex-col gap-8">
+    <div className="flex-1 flex flex-col gap-4">
       <h2 className="heading-2 text-center" data-text="Signos musicales">
         <span>Signos musicales</span>
       </h2>
       <div className="flex-1 grid grid-cols-5 gap-4" style={{ gridTemplateRows: 'repeat(2, minmax(0, 1fr))' }}>
         {ITEMS.map((item) => (
-          <div key={item.name} className="timbre-card flex flex-col items-center justify-center gap-3">
-            <div className="flex items-center justify-center" style={{ minHeight: 64 }}>
+          <div key={item.name} className="timbre-card flex flex-col items-center justify-center gap-2">
+            <div className="flex items-center justify-center" style={{ minHeight: 44 }}>
               {item.render()}
             </div>
-            <span className="timbre-name">{item.name}</span>
+            <span className="timbre-name" style={{ fontSize: 30, marginTop: 0 }}>
+              {item.name}
+            </span>
           </div>
         ))}
       </div>

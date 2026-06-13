@@ -2,7 +2,7 @@ import Pentagrama from '@/components/music/Pentagrama';
 
 export default function SlidePentagramaEspacios() {
   return (
-    <div className="flex-1 flex flex-col gap-8 items-center">
+    <div className="flex-1 flex flex-col gap-6 items-center">
       <h2 className="heading-2" data-text="El pentagrama">
         <span>El pentagrama</span>
       </h2>
@@ -10,11 +10,11 @@ export default function SlidePentagramaEspacios() {
         <Pentagrama
           showSpaceNumbers
           highlightSpaces={[1, 2, 3, 4]}
-          width={900}
+          width={820}
         />
       </div>
       <p className="body-text text-center max-w-3xl">
-        <strong>4 espacios</strong> — entre las líneas, también se cuentan
+        <strong>4 espacios</strong> — entre las líneas, contados
         <em> de abajo hacia arriba</em>.
       </p>
     </div>

@@ -11,21 +11,20 @@ export default function SlideRelacionClaves() {
           <Pentagrama
             clef="sol"
             notes={[{ step: -2, label: 'Do central', highlight: true }]}
-            width={720}
+            width={430}
           />
         </div>
         <div className="text-magenta">
           <Pentagrama
             clef="fa"
             notes={[{ step: 10, label: 'Do central', highlight: true }]}
-            width={720}
+            width={430}
           />
         </div>
       </div>
       <p className="body-text text-center max-w-4xl">
-        El <strong>Do central</strong> es el puente entre ambas claves —
-        está justo <em>una línea adicional</em> debajo del pentagrama de Sol
-        y <em>una arriba</em> del de Fa.
+        El <strong>Do central</strong> une ambas claves: una línea adicional
+        debajo del pentagrama de Sol y <em>una arriba</em> del de Fa.
       </p>
     </div>
   );

@@ -15,6 +15,7 @@ import SlideNotasFaEspacios from './slides/SlideNotasFaEspacios';
 import SlideClaveDeDo from './slides/SlideClaveDeDo';
 import SlideRelacionClaves from './slides/SlideRelacionClaves';
 import SlideCompas from './slides/SlideCompas';
+import SlideCompas2 from './slides/SlideCompas2';
 import SlideBarras from './slides/SlideBarras';
 import SlideCierreCap3 from './slides/SlideCierreCap3';
 
@@ -35,6 +36,7 @@ const SLIDES = [
   SlideClaveDeDo,
   SlideRelacionClaves,
   SlideCompas,
+  SlideCompas2,
   SlideBarras,
   SlideCierreCap3,
 ];

@@ -8,7 +8,7 @@ export default function SlideClaveDeDo() {
         <span>Clave de Do</span>
       </h2>
       <div className="text-electric">
-        <ClefSymbol clef="do" size={140} />
+        <ClefSymbol clef="do" size={110} />
       </div>
       <div className="grid grid-cols-2 gap-8 w-full flex-1 items-center max-w-5xl">
         <div className="flex flex-col items-center gap-2 text-electric">
