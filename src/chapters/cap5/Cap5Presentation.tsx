@@ -7,6 +7,8 @@ import SlideEscalaAscendente from './slides/SlideEscalaAscendente';
 import SlideEscalaAscendente2 from './slides/SlideEscalaAscendente2';
 import SlideEscalaFa from './slides/SlideEscalaFa';
 import SlideEscalaFa2 from './slides/SlideEscalaFa2';
+import SlideEjercicioSol from './slides/SlideEjercicioSol';
+import SlideEjercicioFa from './slides/SlideEjercicioFa';
 
 const SLIDES = [
   SlidePortadaCap5,
@@ -17,6 +19,8 @@ const SLIDES = [
   SlideEscalaAscendente2,
   SlideEscalaFa,
   SlideEscalaFa2,
+  SlideEjercicioSol,
+  SlideEjercicioFa,
 ];
 
 type Props = {
