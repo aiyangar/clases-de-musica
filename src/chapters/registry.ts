@@ -3,6 +3,7 @@ import Cap1Presentation from '@/chapters/cap1/Cap1Presentation';
 import Cap2Presentation from '@/chapters/cap2/Cap2Presentation';
 import Cap3Presentation from '@/chapters/cap3/Cap3Presentation';
 import Cap4Presentation from '@/chapters/cap4/Cap4Presentation';
+import Cap5Presentation from '@/chapters/cap5/Cap5Presentation';
 
 export type LevelId = 'principiante' | 'intermedio' | 'avanzado';
 
@@ -144,8 +145,9 @@ export const CHAPTERS: readonly ChapterMeta[] = [
       'Líneas adicionales inferiores',
       'Conteo y lectura',
     ],
-    status: 'mockup',
+    status: 'available',
     accent: 'lime',
+    presentation: Cap5Presentation,
   },
   {
     id: 'principiante-cap-6',
