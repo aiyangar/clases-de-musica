@@ -13,6 +13,10 @@ export function computeStageTransform(
   stage: { width: number; height: number },
   shouldRotate: boolean,
 ): StageTransform {
+  if (rect.width === 0 || rect.height === 0) {
+    return { scale: 0, logicalWidth: stage.width, rotated: shouldRotate };
+  }
+
   if (shouldRotate) {
     // Rotated -90deg: the fixed logical height maps to the on-screen width,
     // the floored logical width maps to the long (vertical) on-screen axis.

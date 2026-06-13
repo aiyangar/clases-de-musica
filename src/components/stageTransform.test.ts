@@ -50,3 +50,17 @@ describe('computeStageTransform — rotated (portrait/touch)', () => {
     expect(logicalWidth).toBeGreaterThan(STAGE_WIDTH);
   });
 });
+
+describe('computeStageTransform — degenerate input', () => {
+  it('zero-sized rect returns a finite, benign transform (no Infinity)', () => {
+    const { scale, logicalWidth, rotated } = computeStageTransform(
+      { width: 0, height: 0 },
+      stage,
+      false,
+    );
+    expect(scale).toBe(0);
+    expect(logicalWidth).toBe(STAGE_WIDTH);
+    expect(rotated).toBe(false);
+    expect(Number.isFinite(logicalWidth)).toBe(true);
+  });
+});
