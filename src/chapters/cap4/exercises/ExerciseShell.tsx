@@ -45,12 +45,12 @@ export default function ExerciseShell({
   const headingText = `${title} · ${index + 1}/${total}`;
 
   return (
-    <div className="flex-1 flex flex-col gap-6 justify-center">
+    <div className="flex-1 flex flex-col gap-4 justify-center">
       <h2 className="heading-2 self-start" data-text={headingText}>
         <span>{headingText}</span>
       </h2>
 
-      <p className="font-rajdhani text-3xl text-clear/85 max-w-[1700px]">
+      <p className="font-rajdhani text-[56px] leading-snug text-clear/85 max-w-[1700px]">
         {description}
       </p>
 

@@ -1,6 +1,6 @@
 export default function SlideCierreCap4() {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center text-center gap-10">
+    <div className="flex-1 flex flex-col items-center justify-center text-center gap-4">
       <span
         className="font-orbitron text-3xl tracking-[0.4em]"
         style={{ color: '#ff9933', textShadow: '0 0 18px #ff9933' }}
