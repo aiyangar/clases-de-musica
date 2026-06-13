@@ -1,6 +1,6 @@
 export default function SlideCierreCap2() {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center text-center gap-10">
+    <div className="flex-1 flex flex-col items-center justify-center text-center gap-4">
       <span className="font-orbitron text-3xl tracking-[0.4em] text-magenta text-glow-magenta">
         FIN DEL CAPÍTULO II
       </span>

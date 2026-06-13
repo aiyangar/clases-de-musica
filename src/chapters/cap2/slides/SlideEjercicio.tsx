@@ -21,7 +21,7 @@ export default function SlideEjercicio({ part }: Props) {
         <span>{`Ejercicio · ${part}/2`}</span>
       </h2>
 
-      <p className="font-rajdhani text-3xl text-clear/85 max-w-[1700px]">
+      <p className="font-rajdhani text-[56px] leading-snug text-clear/85 max-w-[1700px]">
         Para cada nota, decide si su plica va{' '}
         <em className="text-cyan text-glow-cyan not-italic font-bold">arriba</em>{' '}
         o{' '}

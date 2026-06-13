@@ -60,12 +60,12 @@ export default function PlicaQuiz({ questions, startNumber = 1 }: Props) {
               }}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-orbitron text-lg tracking-[0.25em] text-cyan/85">
+                <span className="font-orbitron text-[26px] tracking-[0.25em] text-cyan/85">
                   {String(startNumber + i).padStart(2, '0')}
                 </span>
                 {isAnswered && (
                   <span
-                    className="font-orbitron text-sm tracking-[0.2em]"
+                    className="font-orbitron text-[20px] tracking-[0.2em]"
                     style={{ color: isCorrect ? '#22ff66' : '#ff3366' }}
                   >
                     {isCorrect ? '✓ CORRECTO' : '✗ INCORRECTO'}
@@ -123,7 +123,7 @@ export default function PlicaQuiz({ questions, startNumber = 1 }: Props) {
         <button
           type="button"
           onClick={() => setAnswers({})}
-          className="font-orbitron text-base tracking-[0.25em] uppercase px-5 py-2 rounded-full border-2 border-magenta text-magenta bg-base/60 hover:border-cyan hover:text-cyan transition-colors"
+          className="font-orbitron text-[24px] tracking-[0.25em] uppercase px-5 py-2 rounded-full border-2 border-magenta text-magenta bg-base/60 hover:border-cyan hover:text-cyan transition-colors"
           style={{ textShadow: '0 0 10px currentColor' }}
         >
           Reiniciar
@@ -268,7 +268,7 @@ function DirectionButton({
       type="button"
       onClick={onClick}
       disabled={isAnswered}
-      className="font-orbitron text-base tracking-[0.2em] uppercase px-3 py-2 rounded-lg border-2 transition-all disabled:cursor-not-allowed"
+      className="font-orbitron text-[28px] tracking-[0.2em] uppercase px-3 py-2 rounded-lg border-2 transition-all disabled:cursor-not-allowed"
       style={{
         borderColor,
         color: textColor,

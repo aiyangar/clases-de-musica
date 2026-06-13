@@ -41,7 +41,7 @@ export default function SlideFiguras({ part }: Props) {
         <span>{`Las figuras · ${part}/2`}</span>
       </h2>
 
-      <p className="font-rajdhani text-3xl text-clear/85">{subtitle}</p>
+      <p className="font-rajdhani text-[56px] leading-snug text-clear/85">{subtitle}</p>
 
       <div className="grid grid-cols-4 gap-6 mt-2">
         {rows.map((r) => (
@@ -71,13 +71,13 @@ function FigureCard({ row }: { row: Row }) {
         />
       </div>
       <div className="text-center">
-        <div className="font-orbitron text-xl md:text-2xl tracking-[0.18em] text-clear">
+        <div className="font-orbitron text-[40px] tracking-[0.18em] text-clear">
           {row.name}
         </div>
         <div className="font-orbitron text-3xl md:text-4xl text-electric text-glow-electric mt-2">
           {row.pulses}
         </div>
-        <div className="font-rajdhani text-base md:text-lg tracking-widest uppercase text-clear/65">
+        <div className="font-rajdhani text-[26px] tracking-widest uppercase text-clear/65">
           pulsos
         </div>
       </div>

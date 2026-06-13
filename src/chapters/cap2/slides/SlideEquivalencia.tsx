@@ -37,7 +37,7 @@ export default function SlideEquivalencia({ part }: Props) {
         <span>{`Equivalencias · ${part}/2`}</span>
       </h2>
 
-      <p className="font-rajdhani text-3xl text-clear/85 max-w-[1700px]">
+      <p className="font-rajdhani text-[56px] leading-snug text-clear/85 max-w-[1700px]">
         {intro}
       </p>
 

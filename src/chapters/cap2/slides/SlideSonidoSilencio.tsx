@@ -15,7 +15,7 @@ export default function SlideSonidoSilencio() {
             color="#00ffff"
             size="clamp(96px, 22vh, 200px)"
           />
-          <span className="font-orbitron text-2xl tracking-[0.25em] text-cyan text-glow-cyan">
+          <span className="font-orbitron text-[40px] tracking-[0.25em] text-cyan text-glow-cyan">
             NEGRA
           </span>
         </div>
@@ -30,7 +30,7 @@ export default function SlideSonidoSilencio() {
             color="#ff00ff"
             size="clamp(96px, 22vh, 200px)"
           />
-          <span className="font-orbitron text-2xl tracking-[0.25em] text-magenta text-glow-magenta">
+          <span className="font-orbitron text-[40px] tracking-[0.25em] text-magenta text-glow-magenta">
             SILENCIO
           </span>
         </div>
