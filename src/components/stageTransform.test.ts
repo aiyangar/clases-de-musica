@@ -49,6 +49,15 @@ describe('computeStageTransform — rotated (portrait/touch)', () => {
     expect(logicalWidth * scale).toBeCloseTo(rect.height, 1);
     expect(logicalWidth).toBeGreaterThan(STAGE_WIDTH);
   });
+
+  it('squarish portrait floor regime: logical width floors at 1180, long axis fills, on-screen width drops below 90%', () => {
+    const rect = { width: 300, height: 300 };
+    const { scale, logicalWidth } = computeStageTransform(rect, stage, true);
+
+    expect(logicalWidth).toBe(STAGE_WIDTH); // floored
+    expect(logicalWidth * scale).toBeCloseTo(rect.height, 1); // long axis still fills
+    expect(STAGE_HEIGHT * scale).toBeLessThan(0.9 * rect.width); // width below 90% (floored)
+  });
 });
 
 describe('computeStageTransform — degenerate input', () => {
