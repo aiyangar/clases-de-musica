@@ -28,6 +28,7 @@ type Props = {
   width?: number | string;
   height?: number | string;
   className?: string;
+  fitNotes?: boolean;
 };
 
 const STAFF_TOP = 110;
@@ -124,6 +125,28 @@ function colorFilterId(color: string): string {
   return `note-tint-${color.replace('#', '').toLowerCase()}`;
 }
 
+function noteExtent(step: number): { top: number; bottom: number } {
+  const y = stepToY(step);
+  const labelY = labelYFor(step);
+  const top = Math.min(y - NOTEHEAD_HALF_HEIGHT, labelY - NOTE_LABEL_FONT_SIZE);
+  const bottom = Math.max(y + NOTEHEAD_HALF_HEIGHT, labelY + NOTE_LABEL_FONT_SIZE * 0.35);
+  return { top, bottom };
+}
+
+export function fitViewBox(steps: number[]): { y: number; height: number } {
+  const PAD = 16;
+  let top = 0;
+  let bottom = VB_HEIGHT;
+  for (const s of steps) {
+    const e = noteExtent(s);
+    top = Math.min(top, e.top);
+    bottom = Math.max(bottom, e.bottom);
+  }
+  if (top < 0) top -= PAD;
+  if (bottom > VB_HEIGHT) bottom += PAD;
+  return { y: top, height: bottom - top };
+}
+
 export default function Pentagrama({
   clef,
   clefLine,
@@ -135,6 +158,7 @@ export default function Pentagrama({
   width = '100%',
   height,
   className,
+  fitNotes = false,
 }: Props) {
   const staffLines = [1, 2, 3, 4, 5].map((n) => ({
     n,
@@ -146,8 +170,12 @@ export default function Pentagrama({
     y: STAFF_BOTTOM - (n - 1) * LINE_GAP - LINE_GAP / 2,
   }));
 
+  const vb = fitNotes
+    ? fitViewBox(notes.map((n) => n.step))
+    : { y: 0, height: VB_HEIGHT };
+
   const resolvedHeight =
-    height ?? (typeof width === 'number' ? (width * VB_HEIGHT) / VB_WIDTH : undefined);
+    height ?? (typeof width === 'number' ? (width * vb.height) / VB_WIDTH : undefined);
 
   const uniqueNoteColors = useMemo(() => {
     const set = new Set<string>();
@@ -162,7 +190,7 @@ export default function Pentagrama({
     <svg
       className={className}
       style={{ width, ...(resolvedHeight !== undefined ? { height: resolvedHeight } : {}) }}
-      viewBox={`0 0 ${VB_WIDTH} ${VB_HEIGHT}`}
+      viewBox={`0 ${vb.y} ${VB_WIDTH} ${vb.height}`}
       role="img"
       aria-label="Pentagrama"
     >
