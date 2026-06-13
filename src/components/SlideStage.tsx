@@ -1,8 +1,8 @@
 import { useLayoutEffect, useRef, type ReactNode } from 'react';
 import { useViewportOrientation } from '@/hooks/useViewportOrientation';
+import { computeStageTransform, STAGE_WIDTH, STAGE_HEIGHT } from './stageTransform';
 
-export const STAGE_WIDTH = 1180;
-export const STAGE_HEIGHT = 820;
+export { STAGE_WIDTH, STAGE_HEIGHT };
 
 export type SlideStageProps = {
   children: ReactNode;
@@ -11,23 +11,6 @@ export type SlideStageProps = {
   className?: string;
   rotateOnPortrait?: boolean;
 };
-
-type StageTransform = { scale: number; rotated: boolean };
-
-function computeStageTransform(
-  rect: { width: number; height: number },
-  stage: { width: number; height: number },
-  shouldRotate: boolean,
-): StageTransform {
-  if (shouldRotate) {
-    const k = Math.min(rect.height / stage.width, rect.width / stage.height);
-    return { scale: k, rotated: true };
-  }
-  return {
-    scale: Math.min(rect.width / stage.width, rect.height / stage.height),
-    rotated: false,
-  };
-}
 
 export default function SlideStage({
   children,
@@ -49,11 +32,12 @@ export default function SlideStage({
       const rect = outer.getBoundingClientRect();
       if (rect.width === 0 || rect.height === 0) return;
       const shouldRotate = rotateOnPortrait && orientation === 'portrait' && isTouchDevice;
-      const { scale, rotated } = computeStageTransform(
+      const { scale, logicalWidth, rotated } = computeStageTransform(
         { width: rect.width, height: rect.height },
         { width, height },
         shouldRotate,
       );
+      inner.style.setProperty('--stage-width', `${logicalWidth}px`);
       inner.style.setProperty('--stage-scale', String(scale));
       inner.style.setProperty('--stage-rotate', rotated ? '-90deg' : '0deg');
     };
@@ -80,7 +64,7 @@ export default function SlideStage({
         ref={innerRef}
         className={className}
         style={{
-          width,
+          width: `var(--stage-width, ${width}px)`,
           height,
           flex: '0 0 auto',
           transformOrigin: 'center center',
